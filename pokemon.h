@@ -12,30 +12,55 @@
 #include <fstream>
 using namespace std;
 
+const int NAME = 21;
+const int DESC = 41;
+const int BIO = 201;
+/*locale loc;*/
+
 
 class pokemon {
 
 public:
     pokemon();
-    pokemon(pokemon& source);
-    pokemon& operator = (pokemon& source);
-    ~pokemon();
+    pokemon(const pokemon& source);
+    pokemon& operator = (const pokemon& source);
 
-    bool create();
-    bool create(int number, string name, string desc, string typeOne, string typeTwo, string bio);
-    bool copy(pokemon& source);
-    void display();
-    bool retrieve();
+    virtual ~pokemon();
+
+    void create();
+    void create(int number, char* name, char* desc, char* typeOne, char* typeTwo, char* bio);
+    void copy(const pokemon& src);
+    void display()const;
+    bool retrieve(char* keyword, pokemon& found);
+    void formatName(char* keyWord);
 
 
+protected:
+    int number;     // 025
+    char* name;     // Pikachu
+    char* desc;     // Thunder Mouse
+    char* typeOne;  // Lighting
+    char* typeTwo;  // Fairy
+    char* bio;      // 1-2 sentences
+};
+
+class node: public pokemon {
+public:
+    node();
+    node(node& source);
+
+    explicit node(pokemon& source);
+    ~node();
+    node*& goLeft();
+    node*& goRight();
+    void setLeft(node* left);
+    void setRight(node* right);
+    bool isLeft();
+    bool isRight();
 
 private:
-    int number; // 025
-    string name; // Pikachu
-    string desc;    // Thunder Mouse
-    string typeOne; // Lighting
-    string typeTwo; // Fairy
-    string bio; // two-three sentences
+    node* left;
+    node* right;
 };
 
 

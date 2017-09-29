@@ -1,6 +1,10 @@
 #include <iostream>
+#include "pokemon.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+
+    pokemon newCatch;
+    newCatch.create();
+    newCatch.display();
     return 0;
 }
