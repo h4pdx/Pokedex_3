@@ -25,7 +25,7 @@ public:
     pokemon(const pokemon& source);
     pokemon& operator = (const pokemon& source);
 
-    virtual ~pokemon();
+    ~pokemon();
 
     void create();
     void create(int number, char* name, char* desc, char* typeOne, char* typeTwo, char* bio);
@@ -33,7 +33,9 @@ public:
     void display()const;
     bool retrieve(char* keyword, pokemon& found);
     void formatName(char* keyWord);
-
+    void allCaps(char * keyWord);
+    void formatSentence(char * keyWord);
+    int getNum();
 
 protected:
     int number;     // 025
@@ -44,6 +46,17 @@ protected:
     char* bio;      // 1-2 sentences
 };
 
+struct node {
+    node();
+    ~node();
+    node(pokemon& source);
+    pokemon entry;
+    node * left;
+    node * right;
+};
+
+// class node
+/*
 class node: public pokemon {
 public:
     node();
@@ -62,6 +75,6 @@ private:
     node* left;
     node* right;
 };
-
+*/
 
 #endif //POKEDEX_POKEMON_H

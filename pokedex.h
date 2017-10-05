@@ -15,20 +15,24 @@ public:
     pokedex();
     ~pokedex();
     pokedex(pokedex& source);
-    pokedex& operator = (const pokemon& source);
-    int retreive(pokemon& found);
+    pokedex& operator = (const node& source);
+    int retreive(node& found);
     void display();
-    int insert(node& toAdd);
+    int insert(pokemon& toAdd);
     int removeEntry();
     int removeAll();
+    int copyAll(pokedex& source);
+    int copyEntry(node& source);
 
 
 private:
     node * root;
     int entryCount;
 
+    int insert(pokemon& toAdd, node*& root);
+    void display(node * root);
+
 
 };
-
 
 #endif //POKEDEX_POKEDEX_H
