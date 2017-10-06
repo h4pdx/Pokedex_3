@@ -10,7 +10,7 @@
 
 const int MAX_COUNT = 300;
 
-class pokedex {
+class pokedex: public utility {
 public:
     pokedex();
     ~pokedex();
@@ -18,18 +18,19 @@ public:
     pokedex& operator = (const node& source);
     int retreive(node& found);
     void display();
-    int insert(pokemon& toAdd);
+    bool insert(pokemon& toAdd);
     int removeEntry();
-    int removeAll();
-    int copyAll(pokedex& source);
+    //int removeAll();
+    //int copyAll(pokedex& source);
     int copyEntry(node& source);
+    bool createEntry();
 
 
 private:
     node * root;
     int entryCount;
 
-    int insert(pokemon& toAdd, node*& root);
+    bool insert(pokemon& toAdd, node*& root);
     void display(node * root);
 
 

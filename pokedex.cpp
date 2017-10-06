@@ -9,40 +9,47 @@ pokedex::pokedex() {
     root = nullptr;
 }
 
+
 pokedex::~pokedex() {
-    removeAll();
+    //removeAll();
 }
 
+/*
 pokedex::pokedex(pokedex& source) {
     copyAll(source);
 }
-
-
+*/
 // wrapper for recursive insert
-int pokedex::insert(pokemon& toAdd) {
-    int success = 0;
+bool pokedex::insert(pokemon& toAdd) {
+    bool success = false;
     success = insert(toAdd,this->root);
     return success;
 }
 
 // recursive insert function
-int pokedex::insert(pokemon& toAdd, node*& root) {
-    int success = 0;
+bool pokedex::insert(pokemon& toAdd, node*& root) {
+    bool success = false;
     if (!root) {
         root = new node(toAdd);
         root->left = root->right = nullptr;
-        ++success;
+        success = true;
+        ++entryCount;
     }
     else {
         // sort left
         if (toAdd.getNum() < root->entry.getNum()){
-            success += insert(toAdd, root->left);
+            success = insert(toAdd, root->left);
         }
         else {
-            success += insert(toAdd, root->right);
+            success = insert(toAdd, root->right);
         }
     }
     return success;
+}
+
+bool pokedex::createEntry() {
+    bool success = false;
+
 }
 
 
@@ -51,7 +58,11 @@ void pokedex::display() {
 }
 
 void pokedex::display(node * root) {
-    
+    if (!root)
+        return;
+    display(root->left);
+    root->entry.display();
+    display(root->right);
 }
 
 

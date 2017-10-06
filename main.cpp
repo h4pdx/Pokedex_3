@@ -1,10 +1,18 @@
 #include <iostream>
-#include "pokemon.h"
+//#include "pokemon.h"
+#include "pokedex.h"
 
 int main() {
 
     pokemon newCatch;
-    newCatch.create();
-    newCatch.display();
+    pokedex alolaDex;
+    do {
+        newCatch.create();
+        newCatch.display();
+        //cout << "\nInsert into tree";
+        alolaDex.insert(newCatch);
+    } while (alolaDex.again());
+    //cout << "\nDisplay Tree";
+    alolaDex.display();
     return 0;
 }

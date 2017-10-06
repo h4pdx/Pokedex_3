@@ -5,20 +5,23 @@
 #ifndef POKEDEX_POKEMON_H
 #define POKEDEX_POKEMON_H
 
+/*
 #include <iostream>
 #include <cctype>
 #include <cstring>
 #include <cstdlib>
 #include <fstream>
 using namespace std;
+ */
+
+#include "utility.h"
 
 const int NAME = 21;
 const int DESC = 41;
 const int BIO = 201;
 /*locale loc;*/
 
-
-class pokemon {
+class pokemon: public utility {
 
 public:
     pokemon();
@@ -32,9 +35,11 @@ public:
     void copy(const pokemon& src);
     void display()const;
     bool retrieve(char* keyword, pokemon& found);
+    /*
     void formatName(char* keyWord);
     void allCaps(char * keyWord);
     void formatSentence(char * keyWord);
+    */
     int getNum();
 
 protected:
@@ -49,7 +54,7 @@ protected:
 struct node {
     node();
     ~node();
-    node(pokemon& source);
+    explicit node(pokemon& source);
     pokemon entry;
     node * left;
     node * right;
