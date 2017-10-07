@@ -9,7 +9,7 @@ bool utility::again() {
     char response = 'n';
     do {
         cout << "\n > Again? (y/n): ";
-        cin >> response;
+        cin >> response; cin.ignore(100, '\n');
         if (response == 'Y' || response == 'y')
             again = true;
     } while (response != 'Y' && response != 'y' && response != 'N' && response != 'n');
@@ -21,7 +21,7 @@ bool utility::confirm() {
     char response = 'n';
     do {
         cout << "\n > Confirm? (y/n): ";
-        cin >> response;
+        cin >> response; cin.ignore(100, '\n');
         if (response == 'Y' || response == 'y')
             confirm = true;
     } while (response != 'Y' && response != 'y' && response != 'N' && response != 'n');

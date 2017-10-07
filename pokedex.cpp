@@ -40,6 +40,7 @@ bool pokedex::insert(pokemon& toAdd, node*& root) {
         if (toAdd.getNum() < root->entry.getNum()){
             success = insert(toAdd, root->left);
         }
+        // sort right
         else {
             success = insert(toAdd, root->right);
         }
@@ -47,12 +48,20 @@ bool pokedex::insert(pokemon& toAdd, node*& root) {
     return success;
 }
 
+// creates obj of pokemon class from user input, inserts into tree
 bool pokedex::createEntry() {
     bool success = false;
-
+    pokemon newCatch;
+    do {
+        newCatch.create(); // pokemon class data entry
+        newCatch.display(); // display for user what they just entered
+    } while (!confirm()); // do again if they press 'n' on confirm
+    if (insert(newCatch)) // insert only when user confirms entry
+        success = true; // report successful insert
+    return success;
 }
 
-
+// inorder display wrapper
 void pokedex::display() {
     return display(root);
 }
