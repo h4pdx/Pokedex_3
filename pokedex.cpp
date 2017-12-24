@@ -20,18 +20,18 @@ pokedex::pokedex(pokedex& source) {
 }
 */
 // wrapper for recursive insert
-bool pokedex::insert(pokemon& toAdd) {
+bool pokedex::insert(const pokemon& toAdd) {
     bool success = false;
     success = insert(toAdd,this->root);
     return success;
 }
 
 // recursive insert function
-bool pokedex::insert(pokemon& toAdd, node*& root) {
+bool pokedex::insert(const pokemon& toAdd, node*& root) {
     bool success = false;
     if (!root) {
         root = new node(toAdd);
-        root->left = root->right = nullptr;
+        //root->left = root->right = nullptr; // possibly redundant
         success = true;
         ++entryCount;
     }
@@ -49,30 +49,76 @@ bool pokedex::insert(pokemon& toAdd, node*& root) {
 }
 
 // creates obj of pokemon class from user input, inserts into tree
-bool pokedex::createEntry() {
+bool pokedex::build() {
     bool success = false;
     pokemon newCatch;
     do {
         newCatch.create(); // pokemon class data entry
         newCatch.display(); // display for user what they just entered
     } while (!confirm()); // do again if they press 'n' on confirm
-    if (insert(newCatch)) // insert only when user confirms entry
+    if (insert(newCatch)) {
         success = true; // report successful insert
+    }
     return success;
 }
 
 // inorder display wrapper
-void pokedex::display() {
-    return display(root);
-}
-
-void pokedex::display(node * root) {
-    if (!root)
+void pokedex::display()const {
+    if (!entryCount) {
+        cout << "\nNothing to display, Pokédex is empty!";
         return;
-    display(root->left);
-    root->entry.display();
-    display(root->right);
+    } else {
+        cout << "\n~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~\n";
+        return display((*this).root);
+    }
 }
 
+// recursive, in-order display
+void pokedex::display(node * current)const {
+    if (!current) {
+        return;
+    }
+    display(current->left);
+    current->entry.display(); // pokemon class display function
+    cout << "\n~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~\n"; //
+    display(current->right);
+}
 
+// determine height of entire tree
+int pokedex::getHeight()const {
+    return getHeight((*this).root);
+}
 
+// determine height of supplied argument's subtree
+int pokedex::getHeight(node * current)const {
+    if (!current) {
+        return 0;
+    }
+    int leftHeight = (getHeight(current->left));
+    int rightHeight = (getHeight(current->right));
+    int height = (max(leftHeight, rightHeight) + 1);
+    return height;
+}
+
+// returns balance of entire tree
+int pokedex::balanceFactor()const {
+    return (*this).balanceFactor((*this).root);
+}
+
+// returns balance factor supplied argument's subtree
+// >0 == left-heavy, 0 == balanced, <0 == right-heavy
+int pokedex::balanceFactor(node * current)const {
+    if (!current) {
+        return 0;
+    }
+    /*
+    int leftHeight = getHeight(current->left);
+    int rightHeight = getHeight(current->right);
+    int balance = leftHeight - rightHeight;
+    return balance;
+    */
+    int balance = 0;
+    balance += getHeight(current->left);
+    balance -= getHeight(current->right);
+    return balance;
+}

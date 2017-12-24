@@ -14,24 +14,29 @@ class pokedex: public utility {
 public:
     pokedex();
     ~pokedex();
-    pokedex(pokedex& source);
+    pokedex(const pokedex& source);
     pokedex& operator = (const node& source);
+    //pokedex& operator += (const node& toAdd);
     int retreive(node& found);
-    void display();
-    bool insert(pokemon& toAdd);
+    void display(void)const;
+    bool insert(const pokemon& toAdd);
     int removeEntry();
     //int removeAll();
     //int copyAll(pokedex& source);
     int copyEntry(node& source);
-    bool createEntry();
+    bool build(void);
+    int getHeight(void)const;
+    int balanceFactor(void)const;
 
 
 private:
     node * root;
     int entryCount;
 
-    bool insert(pokemon& toAdd, node*& root);
-    void display(node * root);
+    bool insert(const pokemon& toAdd, node*& root);
+    void display(node * current)const;
+    int getHeight(node * current)const;
+    int balanceFactor(node * current)const;
 
 
 };

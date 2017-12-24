@@ -29,6 +29,7 @@ public:
     pokemon& operator = (const pokemon& source);
 
     ~pokemon();
+    void clear();
 
     void create();
     void create(int number, char* name, char* desc, char* typeOne, char* typeTwo, char* bio);
@@ -40,7 +41,7 @@ public:
     void allCaps(char * keyWord);
     void formatSentence(char * keyWord);
     */
-    int getNum();
+    int getNum()const;
 
 protected:
     int number;     // 025
@@ -54,7 +55,7 @@ protected:
 struct node {
     node();
     ~node();
-    explicit node(pokemon& source);
+    explicit node(const pokemon& source);
     pokemon entry;
     node * left;
     node * right;

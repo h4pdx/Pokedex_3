@@ -106,3 +106,9 @@ void utility::formatSentence(char * keyWord) {
         }
     }
 }
+
+char* utility::copyArray( char * sourceWord) {
+    char * newWord = new char[strlen(sourceWord) + 1];
+    strcpy(newWord, sourceWord);
+    return newWord;
+}

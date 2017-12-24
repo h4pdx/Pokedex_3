@@ -22,6 +22,7 @@ public:
     void formatName(char* keyWord);
     void allCaps(char * keyWord);
     void formatSentence(char * keyWord);
+    char* copyArray(char* sourceWord);
 
 };
 

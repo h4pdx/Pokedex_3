@@ -16,7 +16,7 @@ int main() {
     } while (alolaDex.again());
     */
 
-    if (alolaDex.createEntry())
+    if (alolaDex.build())
         cout << "\nEntry data added to Pokedex!";
     else cout << "\nError - Entry Data not added to Pokedex.";
     //cout << "\nDisplay Tree";
