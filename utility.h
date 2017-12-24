@@ -18,12 +18,13 @@ public:
     bool confirm();
     bool again();
     bool backToMenu();
-    bool mainMenu();
+    //bool mainMenu();
     void formatName(char* keyWord);
     void allCaps(char * keyWord);
     void formatSentence(char * keyWord);
     char* copyArray(char* sourceWord);
 
+    int mainMenu();
 };
 
 

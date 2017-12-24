@@ -4,6 +4,33 @@
 
 #include "utility.h"
 
+int utility::mainMenu() {
+    int userInput = 0;
+    cout << "\n + + Main Menu + + + +\n"
+         << "\nPress (1) To Add a New Entry."
+         << "\nPress (2) To Display All Entries."
+         << "\nPress (0) to Exit.\n";
+    do {
+        cout << "\n > Make a selection: ";
+        cin >> userInput;
+        cin.ignore(100, '\n');
+        if (userInput < 0 || userInput > 2 || cin.fail()) {
+            cin.clear();
+            cin.ignore();
+            cout << "\nInvalid Number Input! Try Again.";
+        }
+        /*
+        while (cin.fail()) {
+            cin.clear();
+            cin.ignore();
+            cin >> userInput;
+            cin.ignore(100, '\n');
+        }
+        */
+    } while (userInput < 0 || userInput > 2);
+    return userInput;
+}
+
 bool utility::again() {
     bool again = false;
     char response = 'n';
@@ -32,7 +59,7 @@ bool utility::backToMenu() {
     bool back = false;
     char response = 'n';
     do {
-        cout << "\n > Confirm? (y/n): ";
+        cout << "\n > Back to Menu?? (y/n): ";
         cin >> response;
         if (response == 'Y' || response == 'y')
             back = true;

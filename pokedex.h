@@ -15,8 +15,8 @@ public:
     pokedex();
     ~pokedex();
     pokedex(const pokedex& source);
-    pokedex& operator = (const node& source);
-    //pokedex& operator += (const node& toAdd);
+    pokedex& operator = (const pokedex& source);
+    pokedex& operator += (const node& toAdd);
     int retreive(node& found);
     void display(void)const;
     bool insert(const pokemon& toAdd);
@@ -27,6 +27,7 @@ public:
     bool build(void);
     int getHeight(void)const;
     int balanceFactor(void)const;
+    bool copyAll(const pokedex& source);
 
 
 private:
@@ -37,6 +38,7 @@ private:
     void display(node * current)const;
     int getHeight(node * current)const;
     int balanceFactor(node * current)const;
+    bool copyAll(node * source);
 
 
 };

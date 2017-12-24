@@ -15,11 +15,28 @@ int main() {
         alolaDex.insert(newCatch);
     } while (alolaDex.again());
     */
+    int menuItem = 0;
+    do {
+        menuItem = alolaDex.mainMenu();
+        switch(menuItem) {
+            case 1:
+                do {
+                    if (alolaDex.build())
+                        cout << "\nEntry data added to Pokedex!";
+                    else cout << "\nError - Entry Data not added to Pokedex.";
+                } while (alolaDex.again());
+                break;
+            case 2:
+                alolaDex.display();
+                break;
+            case 0:
+                break;
+            default:
+                cout << "\nEnter a valid number.";
+                break;
+        }
+    } while (menuItem != 0 && alolaDex.backToMenu());
 
-    if (alolaDex.build())
-        cout << "\nEntry data added to Pokedex!";
-    else cout << "\nError - Entry Data not added to Pokedex.";
     //cout << "\nDisplay Tree";
-    alolaDex.display();
     return 0;
 }

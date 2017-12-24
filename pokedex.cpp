@@ -84,6 +84,51 @@ void pokedex::display(node * current)const {
     display(current->right);
 }
 
+/*
+bool pokedex::copyAll(pokedex& source) {
+    bool success = copyAll(this->root, source.root);
+    if (success) {
+        this->entryCount = source.entryCount;
+    }
+    return success;
+}
+
+bool pokedex::copyAll(node*& dest, node * source) {
+    bool success = false;
+    if (!source) {
+        dest = nullptr;
+    } else {
+        dest = new node(source);
+        success = true;
+        success = copyAll(dest->left, source->left);
+        success = copyAll(dest->right, source->right);
+        //return true;
+    }
+    return success;
+}
+*/
+
+bool pokedex::copyAll(const pokedex& source) {
+    bool success = copyAll(source.root);
+    if (success) {
+        this->entryCount = source.entryCount;
+    }
+    return success;
+}
+
+bool pokedex::copyAll(node * source) {
+    if (!source) {
+        return false;
+    }
+    bool success = false;
+    if (this->insert(source->entry)) {
+        success = true;
+    }
+    success = copyAll(source->left);
+    success = copyAll(source->right);
+    return success;
+}
+
 // determine height of entire tree
 int pokedex::getHeight()const {
     return getHeight((*this).root);
