@@ -114,64 +114,43 @@ void pokemon::create(int number, char* name, char* desc, char* typeOne, char* ty
         this->number = 0;
     }
     // clear name ptr for use if it isn't already null
-    if (this->name) {
-        delete[] this->name;
-        this->name = nullptr;
-    }
+    clearArray(this->name);
     // if the argument isn't null, then deep copy into calling object data members
     if (name) {
-        this->name = new char[strlen(name) + 1];
-        strcpy(this->name, name);
+        this->name = copyArray(name);
     } else {
         this->name = nullptr;
     }
     // clear desc
-    if (this->desc) {
-        delete[] this->desc;
-        this->desc = nullptr;
-    }
+    clearArray(this->desc);
     // deep copy
     if (desc) {
-        this->desc = new char[strlen(desc) + 1];
-        strcpy(this->desc, desc);
+        //this->desc = new char[strlen(desc) + 1];
+        //strcpy(this->desc, desc);
+        this->desc = copyArray(desc);
     } else {
         this->desc = nullptr;
     }
     // clear typeOne
-    if (this->typeOne) {
-        delete[] this->typeOne;
-        this->typeOne = nullptr;
-    }
+    clearArray(this->typeOne);
     // deep copy
     if (typeOne) {
-        this->typeOne = new char[strlen(typeOne) + 1];
-        strcpy(this->typeOne, typeOne);
+        this->typeOne = copyArray(typeOne);
     } else {
         this->typeOne = nullptr;
     }
     // clear typeTwo
-    if (this->typeTwo) {
-        delete[] this->typeTwo;
-        this->typeTwo = nullptr;
-    }
+    clearArray(this->typeTwo);
     // deep copy
     if (typeTwo != nullptr) {
-        this->typeTwo = new char[strlen(typeTwo) + 1];
-        strcpy(this->typeTwo, typeTwo);
+        this->typeTwo = copyArray(typeTwo);
     } else {
         this->typeTwo = nullptr;
     }
     // clear bio
-    if (this->bio) {
-        delete [] this->bio;
-        this->bio = nullptr;
-    }
+    clearArray(this->bio);
     // deep copy
     if (bio) {
-        /*
-        this->bio = new char[strlen(bio)+1];
-        strcpy(this->bio, bio);
-        */
         this->bio = copyArray(bio);
     } else {
         this->bio = nullptr;

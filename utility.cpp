@@ -134,8 +134,23 @@ void utility::formatSentence(char * keyWord) {
     }
 }
 
-char* utility::copyArray( char * sourceWord) {
-    char * newWord = new char[strlen(sourceWord) + 1];
-    strcpy(newWord, sourceWord);
-    return newWord;
+char* utility::copyArray( char * toCopy) {
+    if (toCopy) {
+        char * newWord = new char[strlen(toCopy) + 1];
+        strcpy(newWord, toCopy);
+        return newWord;
+    } else {
+        return nullptr;
+    }
 }
+
+void utility::clearArray(char* toClear) {
+    if (toClear) {
+        delete [] toClear;
+        toClear = nullptr;
+        cout << "\nArray cleared";
+    }
+    return;
+}
+
+
