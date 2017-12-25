@@ -125,8 +125,6 @@ void pokemon::create(int number, char* name, char* desc, char* typeOne, char* ty
     clearArray(this->desc);
     // deep copy
     if (desc) {
-        //this->desc = new char[strlen(desc) + 1];
-        //strcpy(this->desc, desc);
         this->desc = copyArray(desc);
     } else {
         this->desc = nullptr;
@@ -163,15 +161,28 @@ void pokemon::copy(const pokemon& src) {
     this->create(src.number,src.name,src.desc,src.typeOne,src.typeTwo,src.bio);
 }
 
+// populate passed-in found object
 bool pokemon::retrieve(char* keyword, pokemon& found) {
     bool match = false;
     if (strcmp(this->name, keyword) == 0) {
         match = true;
         found.copy(*this); // populate empty passed-in obj
-        return match;
+        //return match;
     }
     return match;
 }
+
+/*
+// search by name, return new object pointer
+pokemon*& pokemon::retrieve(char* keyword) {
+    pokemon * found = nullptr;
+    if (!strcmp(this->name, keyword)) {
+        found = new pokemon(*this);
+        //return found;
+    }
+    return found;
+}
+*/
 
 void pokemon::display()const {
     // Pokemon number "025"

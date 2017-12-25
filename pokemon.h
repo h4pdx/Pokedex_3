@@ -36,6 +36,7 @@ public:
     void copy(const pokemon& src);
     void display()const;
     bool retrieve(char* keyword, pokemon& found);
+    pokemon*& retrieve(char* keyword);
     /*
     void formatName(char* keyWord);
     void allCaps(char * keyWord);
