@@ -14,11 +14,27 @@ pokedex::~pokedex() {
     //removeAll();
 }
 
-/*
-pokedex::pokedex(pokedex& source) {
-    copyAll(source);
+
+pokedex::pokedex(const pokedex& source) {
+    this->copyAll(source);
 }
-*/
+
+pokedex& pokedex::operator = (const pokedex& source) {
+    if (this == &source) {
+        return (*this);
+    }
+    this->removeAll();
+    this->copyAll(source);
+    return (*this);
+}
+
+pokedex& pokedex::operator += (const pokemon& toAdd) {
+    if (this->insert(toAdd)) {
+        return (*this);
+    }
+    return (*this);
+}
+
 // wrapper for recursive insert
 bool pokedex::insert(const pokemon& toAdd) {
     bool success = false;
@@ -116,13 +132,14 @@ bool pokedex::copyAll(const pokedex& source) {
     return success;
 }
 
+// traverse source tree and call this->insert using the source tree as arguments
 bool pokedex::copyAll(node * source) {
     if (!source) {
         return false;
     }
     bool success = false;
     if (this->insert(source->entry)) {
-        success = true;
+        success = true; // should catch true all the way back to the calling routine
     }
     success = copyAll(source->left);
     success = copyAll(source->right);
@@ -166,4 +183,30 @@ int pokedex::balanceFactor(node * current)const {
     balance += getHeight(current->left);
     balance -= getHeight(current->right);
     return balance;
+}
+
+bool pokedex::removeAll() {
+    //int counter = removeAll(this->root);
+    // if the tally of removed objects equals entryCount,
+    // all items were successfully removed
+    if (removeAll(this->root) == this->entryCount) {
+        this->entryCount = 0; // reset tree count to 0
+        return true; // all objects removed
+    } else {
+        return false;
+    }
+}
+
+int pokedex::removeAll(node*& current) {
+    if (!current) {
+        return 0;
+    }
+    int counter = 0;
+    counter += removeAll(current->left) + removeAll(current->right);
+    if (current) {
+        delete current;
+        current = nullptr;
+        ++counter;
+    }
+    return counter;
 }
