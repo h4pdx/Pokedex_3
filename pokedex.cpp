@@ -11,7 +11,7 @@ pokedex::pokedex() {
 
 
 pokedex::~pokedex() {
-    //removeAll();
+    removeAll();
 }
 
 
@@ -73,7 +73,9 @@ bool pokedex::build() {
         newCatch.display(); // display for user what they just entered
     } while (!confirm()); // do again if they press 'n' on confirm
     if (insert(newCatch)) {
-        success = true; // report successful insert
+        if (balanceAll()) {
+            success = true; // report successful insert
+        }
     }
     return success;
 }
@@ -85,12 +87,12 @@ void pokedex::display()const {
         return;
     } else {
         cout << "\n~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~\n";
-        return display((*this).root);
+        return display(this->root);
     }
 }
 
 // recursive, in-order display
-void pokedex::display(node * current)const {
+void pokedex::display(node* current)const {
     if (!current) {
         return;
     }
@@ -163,13 +165,13 @@ int pokedex::getHeight(node * current)const {
 }
 
 // returns balance of entire tree
-int pokedex::balanceFactor()const {
-    return (*this).balanceFactor((*this).root);
+int pokedex::getBalanceFactor()const {
+    return (*this).getBalanceFactor((*this).root);
 }
 
 // returns balance factor supplied argument's subtree
 // >0 == left-heavy, 0 == balanced, <0 == right-heavy
-int pokedex::balanceFactor(node * current)const {
+int pokedex::getBalanceFactor(node * current)const {
     if (!current) {
         return 0;
     }
@@ -209,4 +211,90 @@ int pokedex::removeAll(node*& current) {
         ++counter;
     }
     return counter;
+}
+
+int pokedex::balanceAll() {
+    return balanceAll(this->root);
+}
+int pokedex::balanceAll(node*& root) {
+    if (!root) {
+        return 0;
+    }
+    int counter = 0;
+    counter += balanceAll(root->left) + balanceAll(root->right);
+    int balanceFactor = getBalanceFactor(root);
+    // determine rotation based on balanceFactor
+    // left-heavy
+    if (balanceFactor >= 2) {
+        int leftBal = getBalanceFactor(root->left);
+        if (leftBal >= 1) {
+            counter += rotateLeft(root);
+        } else {
+            counter += rotateLeftLeft(root);
+        }
+    }
+    // right heavy
+    else if (balanceFactor <= -2) {
+        int rightBal = getBalanceFactor(root->right);
+        if (rightBal <= -1) {
+            counter += rotateRight(root);
+        } else {
+            counter += rotateRightRight(root);
+        }
+    }
+    return counter;
+}
+
+int pokedex::rotateRightRight(node*& root) {
+    if (!root) {
+        return 0;
+    }
+    node * oldRoot = root; // current invocation of root
+    node * hold = root->right; // hold root's right subtree
+    node * newRoot = hold->left; // hold's smaller subtree, new root
+    oldRoot->right = newRoot->left; // adopt new root's smaller subtree
+    hold->left = newRoot->right; // adopt new root's left subtree
+    newRoot->right = hold; // new root can now adopt, hold is larger value subtree
+    newRoot->left = oldRoot; // adopt old root as smaller value subtree
+    root = newRoot; // set current invocation of root to rearranged node
+    return 1;
+}
+
+int pokedex::rotateRight(node*& root) {
+    if (!root) {
+        return 0;
+    }
+    node * oldRoot = root; // will be swapped
+    node * newRoot = oldRoot->right; // larger value sub tree
+    oldRoot->right = newRoot->left; // adopt as new larger value subtree
+    newRoot->left = oldRoot; // adopt old root as lesser value subtree
+    root = newRoot; // reassign root
+    return 1;
+}
+
+int pokedex::rotateLeftLeft(node*& root) {
+    if (!root) {
+        return 0;
+    }
+    node * oldRoot = root;
+    node * hold = oldRoot->left;
+    node * newRoot = hold->right;
+    oldRoot->left = newRoot->right;
+    hold->right = newRoot->left;
+    newRoot->left = hold;
+    newRoot->right = oldRoot;
+    root = newRoot;
+    return 1;
+}
+
+int pokedex::rotateLeft(node*& root) {
+    if (!root || !root->right || !root->left) {
+        return 0;
+    }
+    node * oldRoot = root;
+    node * newRoot = oldRoot->left;
+    oldRoot->left = newRoot->right;
+    newRoot->right = oldRoot;
+    root = newRoot;
+    return 1;
 }

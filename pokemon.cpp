@@ -8,8 +8,7 @@ node::~node() {
     if (this->left) {
         this->left = nullptr;
     }
-    if (this->right)
-    {
+    if (this->right) {
         this->right = nullptr;
     }
 }
@@ -164,7 +163,7 @@ void pokemon::copy(const pokemon& src) {
 // populate passed-in found object
 bool pokemon::retrieve(char* keyword, pokemon& found) {
     bool match = false;
-    if (strcmp(this->name, keyword) == 0) {
+    if (!strcmp(this->name, keyword)) {
         match = true;
         found.copy(*this); // populate empty passed-in obj
         //return match;

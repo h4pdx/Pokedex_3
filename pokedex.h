@@ -26,9 +26,11 @@ public:
     int copyEntry(node& source);
     bool build(void);
     int getHeight(void)const;
-    int balanceFactor(void)const;
+    int getBalanceFactor(void)const;
     bool copyAll(const pokedex& source);
-
+    //bool contains();
+    //bool isEmpty();
+    int balanceAll();
 
 private:
     node * root;
@@ -37,10 +39,15 @@ private:
     bool insert(const pokemon& toAdd, node*& root);
     void display(node * current)const;
     int getHeight(node * current)const;
-    int balanceFactor(node * current)const;
+    int getBalanceFactor(node * current)const;
     bool copyAll(node * source);
     int removeAll(node*& current);
 
+    int balanceAll(node*& root);
+    int rotateLeft(node*& root);
+    int rotateLeftLeft(node*& root);
+    int rotateRight(node*& root);
+    int rotateRightRight(node*& root);
 
 };
 
