@@ -12,8 +12,8 @@ const int MAX_COUNT = 300;
 
 class pokedex: public utility {
 public:
-    pokedex();
-    ~pokedex();
+    pokedex(void);
+    ~pokedex(void);
     pokedex(const pokedex& source);
     pokedex& operator = (const pokedex& source);
     pokedex& operator += (const pokemon& toAdd);
@@ -28,9 +28,9 @@ public:
     int getHeight(void)const;
     int getBalanceFactor(void)const;
     bool copyAll(const pokedex& source);
-    //bool contains();
+    bool contains(pokemon& toCheck);
     //bool isEmpty();
-    int balanceAll();
+    int balanceAll(void);
 
 private:
     node * root;
@@ -42,6 +42,7 @@ private:
     int getBalanceFactor(node * current)const;
     bool copyAll(node * source);
     int removeAll(node*& current);
+    bool contains(pokemon& toCheck, node* root);
 
     int balanceAll(node*& root);
     int rotateLeft(node*& root);

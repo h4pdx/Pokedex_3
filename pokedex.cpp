@@ -25,6 +25,7 @@ pokedex& pokedex::operator = (const pokedex& source) {
     }
     this->removeAll();
     this->copyAll(source);
+    this->balanceAll();
     return (*this);
 }
 
@@ -47,9 +48,9 @@ bool pokedex::insert(const pokemon& toAdd, node*& root) {
     bool success = false;
     if (!root) {
         root = new node(toAdd);
-        //root->left = root->right = nullptr; // possibly redundant
+        root->left = root->right = nullptr; // possibly redundant
         success = true;
-        ++entryCount;
+        ++entryCount; // not job of this function?
     }
     else {
         // sort left
@@ -68,13 +69,22 @@ bool pokedex::insert(const pokemon& toAdd, node*& root) {
 bool pokedex::build() {
     bool success = false;
     pokemon newCatch;
+    cout << "\nBuild your Pokédex: Enter the details of a New Entry!";
     do {
         newCatch.create(); // pokemon class data entry
         newCatch.display(); // display for user what they just entered
     } while (!confirm()); // do again if they press 'n' on confirm
-    if (insert(newCatch)) {
-        if (balanceAll()) {
-            success = true; // report successful insert
+    if (this->insert(newCatch)) {
+        //++this->entryCount; // is it not insert's job to keep count? just insert
+        success = true; // report successful insert
+    }
+    // only need to balance if the pokedex is large enough
+    if (this->entryCount >= 3) {
+        cout << "\nSorting Pokédex Entries...";
+        if (!this->balanceAll()) {
+            cout << "\nPokédex not sorted.";
+        } else {
+            cout << "\nPokédex Sorted!";
         }
     }
     return success;
@@ -126,10 +136,36 @@ bool pokedex::copyAll(node*& dest, node * source) {
 }
 */
 
+// return false if object not found
+bool pokedex::contains(pokemon& toCheck) {
+    return contains(toCheck, this->root);
+}
+
+bool pokedex::contains(pokemon& toCheck, node* root) {
+    if (!root) {
+        return false;
+    }
+    bool isContained = false;
+    if (toCheck == root->entry) { // overloaded pokemon ==
+        isContained = true;
+        //return isContained;
+    }
+    // only recurse further if contained == false, possibly still one out there to find
+    // otherwise just return upward
+    if (!isContained) {
+        isContained = contains(toCheck, root->left);
+    }
+    if (!isContained) {
+        isContained = contains(toCheck, root->right);
+    }
+    return isContained;
+}
+
 bool pokedex::copyAll(const pokedex& source) {
     bool success = copyAll(source.root);
     if (success) {
-        this->entryCount = source.entryCount;
+        (*this).entryCount = source.entryCount;
+        success = this->balanceAll();
     }
     return success;
 }
@@ -213,88 +249,107 @@ int pokedex::removeAll(node*& current) {
     return counter;
 }
 
+// balances entire tree
 int pokedex::balanceAll() {
-    return balanceAll(this->root);
+    return balanceAll(this->root); // balances from the top, down
 }
-int pokedex::balanceAll(node*& root) {
-    if (!root) {
+
+// balances starting from the argument node/pokemon
+int pokedex::balanceAll(node*& current) {
+    if (!current) {
         return 0;
     }
     int counter = 0;
-    counter += balanceAll(root->left) + balanceAll(root->right);
-    int balanceFactor = getBalanceFactor(root);
+    counter += balanceAll(current->left) + balanceAll(current->right);
+    int balanceFactor = getBalanceFactor(current);
     // determine rotation based on balanceFactor
     // left-heavy
     if (balanceFactor >= 2) {
-        int leftBal = getBalanceFactor(root->left);
+        int leftBal = getBalanceFactor(current->left);
         if (leftBal >= 1) {
-            counter += rotateLeft(root);
+            counter += rotateLeft(current);
         } else {
-            counter += rotateLeftLeft(root);
+            counter += rotateLeftLeft(current);
         }
     }
     // right heavy
     else if (balanceFactor <= -2) {
-        int rightBal = getBalanceFactor(root->right);
+        int rightBal = getBalanceFactor(current->right);
         if (rightBal <= -1) {
-            counter += rotateRight(root);
+            counter += rotateRight(current);
         } else {
-            counter += rotateRightRight(root);
+            counter += rotateRightRight(current);
         }
     }
     return counter;
 }
 
 int pokedex::rotateRightRight(node*& root) {
-    if (!root) {
+    if (!root || !root->left || !root->right) {
         return 0;
     }
     node * oldRoot = root; // current invocation of root
-    node * hold = root->right; // hold root's right subtree
+    node * hold = oldRoot->right; // hold root's right subtree
     node * newRoot = hold->left; // hold's smaller subtree, new root
-    oldRoot->right = newRoot->left; // adopt new root's smaller subtree
-    hold->left = newRoot->right; // adopt new root's left subtree
-    newRoot->right = hold; // new root can now adopt, hold is larger value subtree
-    newRoot->left = oldRoot; // adopt old root as smaller value subtree
-    root = newRoot; // set current invocation of root to rearranged node
-    return 1;
+    if (newRoot) {
+        oldRoot->right = newRoot->left; // adopt new root's smaller subtree
+        hold->left = newRoot->right; // adopt new root's left subtree
+        newRoot->right = hold; // new root can now adopt, hold is larger value subtree
+        newRoot->left = oldRoot; // adopt old root as smaller value subtree
+        root = newRoot; // set current invocation of root to rearranged node
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 int pokedex::rotateRight(node*& root) {
-    if (!root) {
+    if (!root || !root->left || !root->right) {
         return 0;
     }
     node * oldRoot = root; // will be swapped
     node * newRoot = oldRoot->right; // larger value sub tree
-    oldRoot->right = newRoot->left; // adopt as new larger value subtree
-    newRoot->left = oldRoot; // adopt old root as lesser value subtree
-    root = newRoot; // reassign root
-    return 1;
+    if (newRoot) {
+        oldRoot->right = newRoot->left; // adopt as new larger value subtree
+        newRoot->left = oldRoot; // adopt old root as lesser value subtree
+        root = newRoot; // reassign root
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 int pokedex::rotateLeftLeft(node*& root) {
-    if (!root) {
-        return 0;
+    if (!root || !root->left || !root->right) {
+        return 0; // return false if there are no children either
     }
     node * oldRoot = root;
     node * hold = oldRoot->left;
     node * newRoot = hold->right;
-    oldRoot->left = newRoot->right;
-    hold->right = newRoot->left;
-    newRoot->left = hold;
-    newRoot->right = oldRoot;
-    root = newRoot;
-    return 1;
+    if (newRoot) {
+        oldRoot->left = newRoot->right;
+        hold->right = newRoot->left;
+        newRoot->left = hold;
+        newRoot->right = oldRoot;
+        root = newRoot;
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 int pokedex::rotateLeft(node*& root) {
-    if (!root || !root->right || !root->left) {
+    if (!root || !root->left || !root->right) {
         return 0;
     }
     node * oldRoot = root;
     node * newRoot = oldRoot->left;
-    oldRoot->left = newRoot->right;
-    newRoot->right = oldRoot;
-    root = newRoot;
-    return 1;
+    if (newRoot) {
+        oldRoot->left = newRoot->right;
+        newRoot->right = oldRoot;
+        root = newRoot;
+        return 1;
+    } else {
+        return 0;
+    }
 }

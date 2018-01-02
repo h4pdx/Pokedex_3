@@ -24,33 +24,37 @@ const int BIO = 201;
 class pokemon: public utility {
 
 public:
-    pokemon();
+    pokemon(void);
     pokemon(const pokemon& source);
     pokemon& operator = (const pokemon& source);
+    friend bool operator == (const pokemon& cmp1, const pokemon& cmp2);
+    friend bool operator == (const pokemon& cmp1, char* cmp2);
+    friend bool operator == (char* cmp1, const pokemon& cmp2);
 
-    ~pokemon();
-    void clear();
+    ~pokemon(void);
+    void clear(void);
 
-    void create();
+    void create(void);
     void create(int number, char* name, char* desc, char* typeOne, char* typeTwo, char* bio);
     void copy(const pokemon& src);
-    void display()const;
-    bool retrieve(char* keyword, pokemon& found);
+    void display(void)const;
+    bool retrieve(char* keyword, pokemon& found)const;
     pokemon*& retrieve(char* keyword);
     /*
     void formatName(char* keyWord);
     void allCaps(char * keyWord);
     void formatSentence(char * keyWord);
     */
-    int getNum()const;
+    int getNum(void)const;
+    char* getName(void)const;
 
 protected:
-    int number;     // 025
-    char* name;     // Pikachu
-    char* desc;     // Thunder Mouse
-    char* typeOne;  // Lighting
-    char* typeTwo;  // Fairy
-    char* bio;      // 1-2 sentences
+    int number;      // 025
+    char * name;     // Pikachu
+    char * desc;     // Thunder Mouse
+    char * typeOne;  // Lighting
+    char * typeTwo;  // Fairy
+    char * bio;      // 1-2 sentences
 };
 
 struct node {
@@ -61,7 +65,6 @@ struct node {
     node * left;
     node * right;
 };
-
 // class node
 /*
 class node: public pokemon {

@@ -8,7 +8,8 @@ node::~node() {
     if (this->left) {
         this->left = nullptr;
     }
-    if (this->right) {
+    if (this->right)
+    {
         this->right = nullptr;
     }
 }
@@ -31,6 +32,30 @@ pokemon& pokemon::operator = (const pokemon& source) {
     this->clear();
     this->copy(source);
     return (*this);
+}
+
+bool operator == (const pokemon& cmp1, const pokemon& cmp2) {
+    if (!strcmp(cmp1.getName(), cmp2.getName())) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator == (const pokemon& cmp1, char* cmp2) {
+    if (!strcmp(cmp1.getName(), cmp2)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator == (char* cmp1, const pokemon& cmp2) {
+    if (!strcmp(cmp1, cmp2.getName())) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 pokemon::~pokemon() {
@@ -161,9 +186,9 @@ void pokemon::copy(const pokemon& src) {
 }
 
 // populate passed-in found object
-bool pokemon::retrieve(char* keyword, pokemon& found) {
+bool pokemon::retrieve(char* keyword, pokemon& found)const {
     bool match = false;
-    if (!strcmp(this->name, keyword)) {
+    if (strcmp(this->name, keyword) == 0) {
         match = true;
         found.copy(*this); // populate empty passed-in obj
         //return match;
@@ -211,7 +236,7 @@ void pokemon::display()const {
     }
     // type one - "Electric"
     if (this->typeOne) {
-        cout << "\t\t\t(" << this->typeOne << ")";
+        cout << "\t\t\t" << this->typeOne << " Type.";
     } else {
         cout << "\t\t\t[NOT ON FILE]"; // if nullptr
     }
@@ -221,7 +246,7 @@ void pokemon::display()const {
         if (this->typeTwo[0] == ' ') { // first letter will have been assigned
             cout << " ";
         } else {
-            cout << " + (" << this->typeTwo << ")"; // otherwise display full typeTwo
+            cout << " / " << this->typeTwo << " Type."; // otherwise display full typeTwo
         }
     } else {
         cout << " [NOT ON FILE]"; // if the ptr is NULL
@@ -304,4 +329,8 @@ keyWord[i] = tolower(keyWord[i]);
 // getter func for given pokemon number
 int pokemon::getNum()const {
     return this->number;
+}
+
+char* pokemon::getName()const {
+    return this->name;
 }

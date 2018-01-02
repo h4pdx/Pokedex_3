@@ -59,7 +59,7 @@ bool utility::backToMenu() {
     bool back = false;
     char response = 'n';
     do {
-        cout << "\n > Back to Menu?? (y/n): ";
+        cout << "\n > Back to Menu? (y/n): ";
         cin >> response;
         if (response == 'Y' || response == 'y')
             back = true;
@@ -134,8 +134,8 @@ void utility::formatSentence(char * keyWord) {
     }
 }
 
-char* utility::copyArray( char * toCopy) {
-    if (toCopy) {
+char* utility::copyArray(char * toCopy) {
+    if (toCopy != nullptr) {
         char * newWord = new char[strlen(toCopy) + 1];
         strcpy(newWord, toCopy);
         return newWord;
@@ -144,13 +144,11 @@ char* utility::copyArray( char * toCopy) {
     }
 }
 
-void utility::clearArray(char* toClear) {
-    if (toClear) {
+void utility::clearArray(char * toClear) {
+    if (toClear != nullptr) {
         delete [] toClear;
         toClear = nullptr;
         cout << "\nArray cleared";
     }
     return;
 }
-
-
