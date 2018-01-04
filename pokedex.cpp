@@ -82,9 +82,9 @@ bool pokedex::build() {
     if (this->entryCount >= 3) {
         cout << "\nSorting Pokédex Entries...";
         if (!this->balanceAll()) {
-            cout << "\nPokédex not sorted.";
+            cout << "\nNot sorted.";
         } else {
-            cout << "\nPokédex Sorted!";
+            cout << "\nSorted!";
         }
     }
     return success;
@@ -137,11 +137,11 @@ bool pokedex::copyAll(node*& dest, node * source) {
 */
 
 // return false if object not found
-bool pokedex::contains(pokemon& toCheck) {
+bool pokedex::contains(const pokemon& toCheck) {
     return contains(toCheck, this->root);
 }
 
-bool pokedex::contains(pokemon& toCheck, node* root) {
+bool pokedex::contains(const pokemon& toCheck, node* root) {
     if (!root) {
         return false;
     }
@@ -165,7 +165,7 @@ bool pokedex::copyAll(const pokedex& source) {
     bool success = copyAll(source.root);
     if (success) {
         (*this).entryCount = source.entryCount;
-        success = this->balanceAll();
+        this->balanceAll();
     }
     return success;
 }
@@ -255,29 +255,36 @@ int pokedex::balanceAll() {
 }
 
 // balances starting from the argument node/pokemon
+// the beauty of pass-by-reference at work
 int pokedex::balanceAll(node*& current) {
     if (!current) {
         return 0;
     }
     int counter = 0;
-    counter += balanceAll(current->left) + balanceAll(current->right);
+    counter += (balanceAll(current->left) + balanceAll(current->right));
     int balanceFactor = getBalanceFactor(current);
     // determine rotation based on balanceFactor
     // left-heavy
     if (balanceFactor >= 2) {
+        // further narrow down which sub-tree is the cause of the imbalance
         int leftBal = getBalanceFactor(current->left);
         if (leftBal >= 1) {
+            // create 2 additional node pointers to "rotate", reassign child pointers
             counter += rotateLeft(current);
         } else {
+            // 3 additional pointers, 4 child reassignments
             counter += rotateLeftLeft(current);
         }
     }
     // right heavy
     else if (balanceFactor <= -2) {
+        // right-left heavey or righ-right heavy
         int rightBal = getBalanceFactor(current->right);
         if (rightBal <= -1) {
+            // involves rotating 2 additional node pointers & swapping children
             counter += rotateRight(current);
         } else {
+            // involves 3 node pointers & swapping children
             counter += rotateRightRight(current);
         }
     }
@@ -292,12 +299,12 @@ int pokedex::rotateRightRight(node*& root) {
     node * hold = oldRoot->right; // hold root's right subtree
     node * newRoot = hold->left; // hold's smaller subtree, new root
     if (newRoot) {
-        oldRoot->right = newRoot->left; // adopt new root's smaller subtree
+        oldRoot->right = newRoot->left; // adopt new root's smaller value (right) subtree
         hold->left = newRoot->right; // adopt new root's left subtree
-        newRoot->right = hold; // new root can now adopt, hold is larger value subtree
+        newRoot->right = hold; // new root can now adopt, hold* is root of larger value subtree
         newRoot->left = oldRoot; // adopt old root as smaller value subtree
         root = newRoot; // set current invocation of root to rearranged node
-        return 1;
+        return 1; // success
     } else {
         return 0;
     }
@@ -319,6 +326,8 @@ int pokedex::rotateRight(node*& root) {
     }
 }
 
+
+// 3 additional node * assignments, 5 pointer reassignment operations.
 int pokedex::rotateLeftLeft(node*& root) {
     if (!root || !root->left || !root->right) {
         return 0; // return false if there are no children either
@@ -338,6 +347,7 @@ int pokedex::rotateLeftLeft(node*& root) {
     }
 }
 
+// 2 additional node* assignments, 3 pointer ressignment operations
 int pokedex::rotateLeft(node*& root) {
     if (!root || !root->left || !root->right) {
         return 0;

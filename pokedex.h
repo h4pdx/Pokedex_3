@@ -28,7 +28,7 @@ public:
     int getHeight(void)const;
     int getBalanceFactor(void)const;
     bool copyAll(const pokedex& source);
-    bool contains(pokemon& toCheck);
+    bool contains(const pokemon& toCheck);
     //bool isEmpty();
     int balanceAll(void);
 
@@ -42,7 +42,7 @@ private:
     int getBalanceFactor(node * current)const;
     bool copyAll(node * source);
     int removeAll(node*& current);
-    bool contains(pokemon& toCheck, node* root);
+    bool contains(const pokemon& toCheck, node* root);
 
     int balanceAll(node*& root);
     int rotateLeft(node*& root);
