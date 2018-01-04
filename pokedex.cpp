@@ -54,12 +54,15 @@ bool pokedex::insert(const pokemon& toAdd, node*& root) {
     }
     else {
         // sort left
-        if (toAdd.getNum() < root->entry.getNum()){
+        if (toAdd < root->entry) {
             success = insert(toAdd, root->left);
         }
         // sort right
-        else {
+        else if (toAdd > root->entry) {
             success = insert(toAdd, root->right);
+        }
+        else if (toAdd == root->entry) {
+            success = false; // no duplicates!
         }
     }
     return success;
@@ -69,7 +72,8 @@ bool pokedex::insert(const pokemon& toAdd, node*& root) {
 bool pokedex::build() {
     bool success = false;
     pokemon newCatch;
-    cout << "\nBuild your Pokédex: Enter the details of a New Entry!";
+    cout << "\nBuild your Pokédex: Enter the details of a New Entry!\n";
+         //<< "\n+= += += += += += += += += += += += += += += += += += += += \n";
     do {
         newCatch.create(); // pokemon class data entry
         newCatch.display(); // display for user what they just entered
@@ -96,6 +100,7 @@ void pokedex::display()const {
         cout << "\nNothing to display, Pokédex is empty!";
         return;
     } else {
+        cout << "\nDisplaying All Pokédex entries (" << this->entryCount << ")";
         cout << "\n~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~\n";
         return display(this->root);
     }

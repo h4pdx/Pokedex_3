@@ -28,8 +28,28 @@ public:
     pokemon(const pokemon& source);
     pokemon& operator = (const pokemon& source);
     friend bool operator == (const pokemon& cmp1, const pokemon& cmp2);
-    friend bool operator == (const pokemon& cmp1, char* cmp2);
-    friend bool operator == (char* cmp1, const pokemon& cmp2);
+    friend bool operator == (const pokemon& cmp1, int cmp2);
+    friend bool operator == (int cmp1, const pokemon& cmp2);
+
+    friend bool operator != (const pokemon& cmp1, const pokemon& cmp2);
+    friend bool operator != (const pokemon& cmp1, int cmp2);
+    friend bool operator != (int cmp1, const pokemon& cmp2);
+
+    friend bool operator < (const pokemon& cmp1, const pokemon& cmp2);
+    friend bool operator < (const pokemon& cmp1, int cmp2);
+    friend bool operator < (int cmp1, const pokemon& cmp2);
+
+    friend bool operator > (const pokemon& cmp1, const pokemon& cmp2);
+    friend bool operator > (const pokemon& cmp1, int cmp2);
+    friend bool operator > (int cmp1, const pokemon& cmp2);
+
+    friend bool operator <= (const pokemon& cmp1, const pokemon& cmp2);
+    friend bool operator <= (const pokemon& cmp1, int cmp2);
+    friend bool operator <= (int cmp1, const pokemon& cmp2);
+
+    friend bool operator >= (const pokemon& cmp1, const pokemon& cmp2);
+    friend bool operator >= (const pokemon& cmp1, int cmp2);
+    friend bool operator >= (int cmp1, const pokemon& cmp2);
 
     ~pokemon(void);
     void clear(void);
@@ -39,7 +59,9 @@ public:
     void copy(const pokemon& src);
     void display(void)const;
     bool retrieve(char* keyword, pokemon& found)const;
-    pokemon*& retrieve(char* keyword);
+    pokemon* retrieve(char* keyword)const;
+    bool retrieve(int key, pokemon& found) const;
+    pokemon* retrieve(int key)const;
     /*
     void formatName(char* keyWord);
     void allCaps(char * keyWord);
@@ -48,7 +70,7 @@ public:
     int getNum(void)const;
     char* getName(void)const;
 
-protected:
+private:
     int number;      // 025
     char * name;     // Pikachu
     char * desc;     // Thunder Mouse

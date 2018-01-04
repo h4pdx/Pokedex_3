@@ -35,28 +35,150 @@ pokemon& pokemon::operator = (const pokemon& source) {
 }
 
 bool operator == (const pokemon& cmp1, const pokemon& cmp2) {
-    if (!strcmp(cmp1.getName(), cmp2.getName())) {
+    if (cmp1.getNum() == cmp2.getNum()) {
         return true;
     } else {
         return false;
     }
 }
 
-bool operator == (const pokemon& cmp1, char* cmp2) {
-    if (!strcmp(cmp1.getName(), cmp2)) {
+bool operator == (const pokemon& cmp1, int cmp2) {
+    if (cmp1.getNum() == cmp2) {
         return true;
     } else {
         return false;
     }
 }
 
-bool operator == (char* cmp1, const pokemon& cmp2) {
-    if (!strcmp(cmp1, cmp2.getName())) {
+bool operator == (int cmp1, const pokemon& cmp2) {
+    if (cmp1 == cmp2.getNum()) {
         return true;
     } else {
         return false;
     }
 }
+
+bool operator != (const pokemon& cmp1, const pokemon& cmp2) {
+    if (cmp1.getNum() != cmp2.getNum()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator != (const pokemon& cmp1, int cmp2) {
+    if (cmp1.getNum() != cmp2) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator != (int cmp1, const pokemon& cmp2) {
+    if (cmp1 != cmp2.getNum()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator < (const pokemon& cmp1, const pokemon& cmp2) {
+    if (cmp1.getNum() < cmp2.getNum()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator < (const pokemon& cmp1, int cmp2) {
+    if (cmp1.getNum() < cmp2) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator < (int cmp1, const pokemon& cmp2) {
+    if (cmp1 < cmp2.getNum()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+bool operator > (const pokemon& cmp1, const pokemon& cmp2) {
+    if (cmp1.getNum() > cmp2.getNum()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator > (const pokemon& cmp1, int cmp2) {
+    if (cmp1.getNum() > cmp2) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator > (int cmp1, const pokemon& cmp2) {
+    if (cmp1 > cmp2.getNum()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator <= (const pokemon& cmp1, const pokemon& cmp2) {
+    if (cmp1.getNum() <= cmp2.getNum()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator <= (const pokemon& cmp1, int cmp2) {
+    if (cmp1.getNum() <= cmp2) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator <= (int cmp1, const pokemon& cmp2) {
+    if (cmp1 <= cmp2.getNum()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator >= (const pokemon& cmp1, const pokemon& cmp2) {
+    if (cmp1.getNum() >= cmp2.getNum()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator >= (const pokemon& cmp1, int cmp2) {
+    if (cmp1.getNum() >= cmp2) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator >= (int cmp1, const pokemon& cmp2) {
+    if (cmp1 >= cmp2.getNum()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 pokemon::~pokemon() {
     this->clear();
@@ -182,13 +304,13 @@ void pokemon::create(int number, char* name, char* desc, char* typeOne, char* ty
 
 // create(args) does a lot of work
 void pokemon::copy(const pokemon& src) {
-    this->create(src.number,src.name,src.desc,src.typeOne,src.typeTwo,src.bio);
+    this->create(src.number, src.name, src.desc, src.typeOne, src.typeTwo, src.bio);
 }
 
 // populate passed-in found object
 bool pokemon::retrieve(char* keyword, pokemon& found)const {
     bool match = false;
-    if (strcmp(this->name, keyword) == 0) {
+    if (!strcmp(this->name, keyword)) {
         match = true;
         found.copy(*this); // populate empty passed-in obj
         //return match;
@@ -196,17 +318,34 @@ bool pokemon::retrieve(char* keyword, pokemon& found)const {
     return match;
 }
 
-/*
 // search by name, return new object pointer
-pokemon*& pokemon::retrieve(char* keyword) {
+pokemon* pokemon::retrieve(char* keyword)const {
     pokemon * found = nullptr;
     if (!strcmp(this->name, keyword)) {
-        found = new pokemon(*this);
+        found = new pokemon(*this); // searches will need to be followed by delete, in calling routine most likely
         //return found;
     }
     return found;
 }
-*/
+
+// search by number, populate passed-in object
+bool pokemon::retrieve(int key, pokemon& found)const {
+    bool match = false;
+    if (this->number == key) {
+        match = true;
+        found.copy(*this);
+    }
+    return match;
+}
+
+// search by number, return nullptr or pointer value
+pokemon* pokemon::retrieve(int key)const {
+    pokemon* found = nullptr; // return null if not found
+    if (this->number == key) {
+        found = new pokemon(*this); // return new object
+    }
+    return found;
+}
 
 void pokemon::display()const {
     // Pokemon number "025"
