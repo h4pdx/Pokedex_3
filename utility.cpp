@@ -5,7 +5,6 @@
 #include "utility.h"
 
 int utility::mainMenu() throw(int) {
-    //int userInput = 0;
     try {
         int userInput = 0;
         cout << "\n + + Main Menu + + + +\n"
@@ -13,46 +12,32 @@ int utility::mainMenu() throw(int) {
              << "\nPress (2) To Display All Entries."
              << "\nPress (0) to Exit.\n";
         do {
-            cout << "\n > Make a selection: ";
+            cout << "\n >> Make a selection: ";
             cin >> userInput;
             cin.ignore(100, '\n');
             if (cin.fail()) {
+                cout << "\nError - Enter a valid number.\n";
                 cin.clear();
                 cin.ignore();
                 throw userInput;
             }
-            /*
-            if (userInput < 0 || userInput > 2 || cin.fail()) {
-                cin.clear();
-                cin.ignore();
-                cout << "\nInvalid Number Input! Try Again.";
-            }
-            */
-            /*
-            while (cin.fail()) {
-                cin.clear();
-                cin.ignore();
-                cin >> userInput;
-                cin.ignore(100, '\n');
-            }
-            */
         } while (userInput < 0 || userInput > 2);
         return userInput;
     }
     catch (int) {
         return mainMenu();
     }
-    //return userInput;
 }
 
 bool utility::again() throw(char) {
     char response = 'n';
     try {
-        cout << " >> Again? (y/n): ";
+        cout << "\n >> Again? (y/n): ";
         cin >> response;
         cin.ignore(100,'\n');
         response = toupper(response);
         if (response != 'Y' && response != 'N') {
+            cout << "\nError - Enter a valid answer (y/n).";
             throw response;
         }
         if (response == 'Y') {
@@ -69,11 +54,12 @@ bool utility::again() throw(char) {
 bool utility::backToMenu() throw(char) {
     char response = 'n';
     try {
-        cout << " >> Return to previous menu? (y/n): ";
+        cout << "\n >> Return to previous menu? (y/n): ";
         cin >> response;
         cin.ignore(100,'\n');
         response = toupper(response);
         if (response != 'Y' && response != 'N') {
+            cout << "\nError - Enter a valid answer (y/n).";
             throw response;
         }
         if (response == 'Y') {
@@ -87,51 +73,27 @@ bool utility::backToMenu() throw(char) {
     }
 }
 
-/*
-bool utility::again() {
-    bool again = false;
+bool utility::confirm() throw(char) {
     char response = 'n';
-    do {
-        cout << "\n > Again? (y/n): ";
-        cin >> response; cin.ignore(100, '\n');
-        if (response == 'Y' || response == 'y')
-            again = true;
-    } while (response != 'Y' && response != 'y' && response != 'N' && response != 'n');
-    return again;
-}
-*/
-
-bool utility::confirm() {
-    bool confirm = false;
-    char response = 'n';
-    do {
-        cout << "\n > Confirm? (y/n): ";
-        cin >> response; cin.ignore(100, '\n');
-        if (response == 'Y' || response == 'y')
-            confirm = true;
-    } while (response != 'Y' && response != 'y' && response != 'N' && response != 'n');
-    return confirm;
-}
-
-/*
-bool utility::backToMenu() {
-    bool back = false;
-    char response = 'n';
-    do {
-        cout << "\n > Back to Menu? (y/n): ";
+    try {
+        cout << "\n >> Confirm? (y/n): ";
         cin >> response;
-        if (response == 'Y' || response == 'y')
-            back = true;
-    } while (response != 'Y' && response != 'y' && response != 'N' && response != 'n');
-    return back;
+        cin.ignore(100, '\n');
+        response = toupper(response);
+        if (response != 'Y' && response != 'N') {
+            cout << "\nError - Enter a valid answer (y/n).";
+            throw response;
+        }
+        if (response == 'Y') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    catch (char) {
+        return confirm();
+    }
 }
-*/
-
-/*
-bool validateInput(int input) {
-
-}
-*/
 
 // Format inputs, for consistency in recording, searching, displaying
 void utility::formatName(char * keyWord) {

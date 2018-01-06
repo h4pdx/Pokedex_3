@@ -15,7 +15,7 @@ using namespace std;
 
 class utility {
 public:
-    bool confirm();
+    bool confirm() throw(char);
     bool again() throw(char);
     bool backToMenu() throw (char);
     void formatName(char* keyWord);

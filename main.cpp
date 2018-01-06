@@ -33,6 +33,7 @@ int main() {
                 break;
             default:
                 cout << "\nEnter a valid number.";
+                //menuItem = alolaDex.mainMenu();
                 break;
         }
     } while (menuItem != 0 && alolaDex.backToMenu());
