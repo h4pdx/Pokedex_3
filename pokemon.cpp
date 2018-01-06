@@ -214,7 +214,8 @@ void pokemon::create() {
     char response = 'n';
     // NUMBER
     cout << "\nPokemon number: ";
-    cin >> number; cin.ignore(100,'\n');
+    cin >> number;
+    cin.ignore(100,'\n');
     // NAME
     cout << "\nPokemon name: ";
     //getline(cin, this->name);

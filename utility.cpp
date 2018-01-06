@@ -4,33 +4,90 @@
 
 #include "utility.h"
 
-int utility::mainMenu() {
-    int userInput = 0;
-    cout << "\n + + Main Menu + + + +\n"
-         << "\nPress (1) To Add a New Entry."
-         << "\nPress (2) To Display All Entries."
-         << "\nPress (0) to Exit.\n";
-    do {
-        cout << "\n > Make a selection: ";
-        cin >> userInput;
-        cin.ignore(100, '\n');
-        if (userInput < 0 || userInput > 2 || cin.fail()) {
-            cin.clear();
-            cin.ignore();
-            cout << "\nInvalid Number Input! Try Again.";
-        }
-        /*
-        while (cin.fail()) {
-            cin.clear();
-            cin.ignore();
+int utility::mainMenu() throw(int) {
+    //int userInput = 0;
+    try {
+        int userInput = 0;
+        cout << "\n + + Main Menu + + + +\n"
+             << "\nPress (1) To Add a New Entry."
+             << "\nPress (2) To Display All Entries."
+             << "\nPress (0) to Exit.\n";
+        do {
+            cout << "\n > Make a selection: ";
             cin >> userInput;
             cin.ignore(100, '\n');
-        }
-        */
-    } while (userInput < 0 || userInput > 2);
-    return userInput;
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore();
+                throw userInput;
+            }
+            /*
+            if (userInput < 0 || userInput > 2 || cin.fail()) {
+                cin.clear();
+                cin.ignore();
+                cout << "\nInvalid Number Input! Try Again.";
+            }
+            */
+            /*
+            while (cin.fail()) {
+                cin.clear();
+                cin.ignore();
+                cin >> userInput;
+                cin.ignore(100, '\n');
+            }
+            */
+        } while (userInput < 0 || userInput > 2);
+        return userInput;
+    }
+    catch (int) {
+        return mainMenu();
+    }
+    //return userInput;
 }
 
+bool utility::again() throw(char) {
+    char response = 'n';
+    try {
+        cout << " >> Again? (y/n): ";
+        cin >> response;
+        cin.ignore(100,'\n');
+        response = toupper(response);
+        if (response != 'Y' && response != 'N') {
+            throw response;
+        }
+        if (response == 'Y') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    catch (char) {
+        return again();
+    }
+}
+
+bool utility::backToMenu() throw(char) {
+    char response = 'n';
+    try {
+        cout << " >> Return to previous menu? (y/n): ";
+        cin >> response;
+        cin.ignore(100,'\n');
+        response = toupper(response);
+        if (response != 'Y' && response != 'N') {
+            throw response;
+        }
+        if (response == 'Y') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    catch (char) {
+        return backToMenu();
+    }
+}
+
+/*
 bool utility::again() {
     bool again = false;
     char response = 'n';
@@ -42,6 +99,7 @@ bool utility::again() {
     } while (response != 'Y' && response != 'y' && response != 'N' && response != 'n');
     return again;
 }
+*/
 
 bool utility::confirm() {
     bool confirm = false;
@@ -55,6 +113,7 @@ bool utility::confirm() {
     return confirm;
 }
 
+/*
 bool utility::backToMenu() {
     bool back = false;
     char response = 'n';
@@ -66,7 +125,13 @@ bool utility::backToMenu() {
     } while (response != 'Y' && response != 'y' && response != 'N' && response != 'n');
     return back;
 }
+*/
 
+/*
+bool validateInput(int input) {
+
+}
+*/
 
 // Format inputs, for consistency in recording, searching, displaying
 void utility::formatName(char * keyWord) {

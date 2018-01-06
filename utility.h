@@ -16,14 +16,14 @@ using namespace std;
 class utility {
 public:
     bool confirm();
-    bool again();
-    bool backToMenu();
+    bool again() throw(char);
+    bool backToMenu() throw (char);
     void formatName(char* keyWord);
     void allCaps(char * keyWord);
     void formatSentence(char * keyWord);
     char* copyArray(char* sourceWord);
     void clearArray(char* toClear);
-    int mainMenu();
+    int mainMenu() throw(int);
 };
 
 

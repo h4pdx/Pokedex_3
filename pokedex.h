@@ -22,7 +22,6 @@ public:
     bool insert(const pokemon& toAdd);
     //int removeEntry();
     bool removeAll(void);
-    //int copyAll(pokedex& source);
     int copyEntry(node& source);
     bool build(void);
     int getHeight(void)const;
