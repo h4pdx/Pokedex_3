@@ -29,6 +29,8 @@ int utility::mainMenu() throw(int) {
     }
 }
 
+
+/*
 bool utility::again() throw(char) {
     char response = 'n';
     try {
@@ -50,7 +52,9 @@ bool utility::again() throw(char) {
         return again();
     }
 }
+*/
 
+/*
 bool utility::backToMenu() throw(char) {
     char response = 'n';
     try {
@@ -72,7 +76,9 @@ bool utility::backToMenu() throw(char) {
         return backToMenu();
     }
 }
+*/
 
+/*
 bool utility::confirm() throw(char) {
     char response = 'n';
     try {
@@ -92,6 +98,28 @@ bool utility::confirm() throw(char) {
     }
     catch (char) {
         return confirm();
+    }
+}
+*/
+
+bool utility::askUser(string toAsk) throw(char) {
+    char response = 'n';
+    try {
+        cout << "\n >> " << toAsk << "? (y/n): ";
+        cin >> response;
+        cin.ignore(100, '\n');
+        response = toupper(response);
+        if (response != 'Y' && response != 'N') {
+            cout << "\nError - enter a valid answer.";
+            throw response;
+        }
+        if (response == 'Y') {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (char) {
+        return askUser(toAsk);
     }
 }
 

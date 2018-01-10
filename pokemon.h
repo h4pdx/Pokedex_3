@@ -27,6 +27,7 @@ public:
     pokemon(void);
     pokemon(const pokemon& source);
     pokemon& operator = (const pokemon& source);
+
     friend bool operator == (const pokemon& cmp1, const pokemon& cmp2);
     friend bool operator == (const pokemon& cmp1, int cmp2);
     friend bool operator == (int cmp1, const pokemon& cmp2);
@@ -55,6 +56,9 @@ public:
     void clear(void);
 
     void create(void);
+    void createField(string inputPrompt, char* userInput, int fieldLen) throw(char*);
+    void createField(int& userInput) throw(int);
+
     void create(int number, char* name, char* desc, char* typeOne, char* typeTwo, char* bio);
     void copy(const pokemon& src);
     void display(void)const;
@@ -62,11 +66,6 @@ public:
     pokemon* retrieve(char* keyword)const;
     bool retrieve(int key, pokemon& found) const;
     pokemon* retrieve(int key)const;
-    /*
-    void formatName(char* keyWord);
-    void allCaps(char * keyWord);
-    void formatSentence(char * keyWord);
-    */
     int getNum(void)const;
     char* getName(void)const;
 

@@ -24,19 +24,25 @@ int main() {
                     if (alolaDex.build())
                         cout << "\nEntry data added to Pokedex!";
                     else cout << "\nError - Entry Data not added to Pokedex.";
-                } while (alolaDex.again());
+                } while (alolaDex.askUser("Again"));
                 break;
             case 2:
                 alolaDex.display();
                 break;
             case 0:
+                if (alolaDex.askUser("Confirm")) {
+                    cout << "\nGotta catch 'em all!\n";
+                    return 0;
+                } else {
+                    break;
+                }
                 break;
             default:
                 cout << "\nEnter a valid number.";
                 //menuItem = alolaDex.mainMenu();
                 break;
         }
-    } while (menuItem != 0 && alolaDex.backToMenu());
+    } while (alolaDex.askUser("Back to Menu"));
 
     //cout << "\nDisplay Tree";
     return 0;

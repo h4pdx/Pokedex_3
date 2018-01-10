@@ -106,7 +106,6 @@ bool operator < (int cmp1, const pokemon& cmp2) {
     }
 }
 
-
 bool operator > (const pokemon& cmp1, const pokemon& cmp2) {
     if (cmp1.getNum() > cmp2.getNum()) {
         return true;
@@ -207,46 +206,62 @@ void pokemon::clear() {
     }
 }
 
+// Prompt user for input, repeat if invalid input entered
+void pokemon::createField(string inputPrompt, char* userInput, int fieldLen) throw(char*) {
+    try {
+        cout << "\n >> " << inputPrompt << ": ";
+        cin.get(userInput, fieldLen, '\n');
+        cin.ignore(fieldLen, '\n');
+        if (!cin.fail()) {
+            return;
+        } else {
+            throw userInput;
+        }
+    } catch(char*) {
+        cin.clear();
+        cin.ignore();
+        cout << "\nError - invalid input. Try again.";
+        return createField(inputPrompt, userInput, fieldLen);
+    }
+}
+
+void pokemon::createField(int& userInput) throw(int) {
+    try {
+        cout << "\n >> Enter Pokémon number: ";
+        cin >> userInput;
+        cin.ignore(100, '\n');
+        if (cin.fail() || userInput <= 0 || userInput > 800) {
+            throw userInput;
+        } else {
+            return;
+        }
+    } catch(int) {
+        cin.clear();
+        cin.ignore();
+        cout << "\nError - invalid input. Try again.";
+        return createField(userInput);
+    }
+}
+
+// Take user input for the Pokemon data fields
 void pokemon::create() {
     //bool success = false;
     int number = 0;
     char name[NAME], desc[DESC], typeOne[NAME], typeTwo[NAME], bio[BIO];
-    char response = 'n';
-    // NUMBER
-    cout << "\nPokemon number: ";
-    cin >> number;
-    cin.ignore(100,'\n');
-    // NAME
-    cout << "\nPokemon name: ";
-    //getline(cin, this->name);
-    cin.get(name, NAME, '\n'); cin.ignore(NAME, '\n');
+    this->createField(number);
+    this->createField("Pokémon name", name, NAME);
     formatName(name);
-    // DESCRIPTION
-    cout << "\nBrief description: ";
-    //getline(cin, this->desc);
-    cin.get(desc, DESC, '\n'); cin.ignore(DESC, '\n');
+    this->createField("Brief description", desc, DESC);
     formatName(desc);
-    // TYPE 1
-    cout << "\nEnter Type 1: ";
-    cin.get(typeOne, NAME, '\n'); cin.ignore(NAME,'\n');
+    this->createField("Type One", typeOne, NAME);
     allCaps(typeOne);
-    // TYPE 2
-    do {
-        // add a conditional to skip Type 2 input if the Pokemon does not have two types
-        cout << "\nDoes the Pokemon have a 2nd Type? (y/n): ";
-        cin >> response; cin.ignore(100,'\n');
-        if (response == 'y' || response == 'Y') {
-            cout << "\nEnter Type 2: ";
-            cin.get(typeTwo, NAME, '\n');
-            cin.ignore(NAME, '\n');
-            allCaps(typeTwo);
-        } else {
-            typeTwo[0] = ' ';
-        }
-    } while (response != 'n' && response != 'N' && response != 'y' && response != 'Y');
-    // BIO
-    cout << "\nEnter bio: ";
-    cin.get(bio, BIO, '\n'); cin.ignore(BIO, '\n');
+    if (askUser("Does the Pokémon have a 2nd type")) {
+        this->createField("Type Two", typeTwo, NAME);
+        allCaps(typeTwo);
+    } else {
+        typeTwo[0] = ' ';
+    }
+    this->createField("A short bio", bio, BIO);
     formatSentence(bio);
     // pass populated arrays off for deep copy into calling object
     this->create(number, name, desc, typeOne, typeTwo, bio);
@@ -364,9 +379,9 @@ void pokemon::display()const {
     }
     // Pokemon Name "Pikachu"
     if (this->name) {
-        cout << "\t\t" << this->name;
+        cout << "\t" << this->name;
     } else {
-        cout << "\t\tNo name on file. Please update Pokédex."; // if nullptr
+        cout << "\tNo name on file. Please update Pokédex."; // if nullptr
     }
     // description "Mouse Pokemon"
     if (this->desc) {
@@ -376,20 +391,21 @@ void pokemon::display()const {
     }
     // type one - "Electric"
     if (this->typeOne) {
-        cout << "\t\t\t" << this->typeOne << " Type.";
+        cout << "\t\t" << this->typeOne;
     } else {
-        cout << "\t\t\t[NOT ON FILE]"; // if nullptr
+        cout << "\t\t[NOT ON FILE]"; // if nullptr
     }
     // if type two has any substance
     // would it be better off to leave typeTwo as NULL if there is no 2nd type?
     if (this->typeTwo) {
-        if (this->typeTwo[0] == ' ') { // first letter will have been assigned
-            cout << " ";
-        } else {
-            cout << " / " << this->typeTwo << " Type."; // otherwise display full typeTwo
+        if (this->typeTwo[0] != ' ') { // first letter will have been assigned
+            cout << " / " << this->typeTwo; // otherwise display full typeTwo
         }
     } else {
         cout << " [NOT ON FILE]"; // if the ptr is NULL
+    }
+    if (this->typeOne || this->typeTwo) {
+        cout << " Type.";
     }
     // display bio
     if (this->bio) {

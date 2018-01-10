@@ -23,16 +23,20 @@ pokedex& pokedex::operator = (const pokedex& source) {
     if (this == &source) {
         return (*this);
     }
-    this->removeAll();
-    this->copyAll(source);
-    this->balanceAll();
+    if (!this->removeAll()) {
+        return (*this);
+    }
+    if (!this->copyAll(source)) {
+        return (*this);
+    }
+    if (!this->balanceAll()) {
+        return (*this);
+    }
     return (*this);
 }
 
 pokedex& pokedex::operator += (const pokemon& toAdd) {
-    if (this->insert(toAdd)) {
-        return (*this);
-    }
+    this->insert(toAdd);
     return (*this);
 }
 
@@ -40,6 +44,7 @@ pokedex& pokedex::operator += (const pokemon& toAdd) {
 bool pokedex::insert(const pokemon& toAdd) {
     bool success = false;
     success = insert(toAdd,this->root);
+    //this->balanceAll();
     return success;
 }
 
@@ -77,7 +82,7 @@ bool pokedex::build() {
     do {
         newCatch.create(); // pokemon class data entry
         newCatch.display(); // display for user what they just entered
-    } while (!confirm()); // do again if they press 'n' on confirm
+    } while (!askUser("Confirm")); // do again if they press 'n' on confirm
     if (this->insert(newCatch)) {
         //++this->entryCount; // is it not insert's job to keep count? just insert
         success = true; // report successful insert
@@ -199,8 +204,8 @@ int pokedex::getHeight(node * current)const {
     if (!current) {
         return 0;
     }
-    int leftHeight = (getHeight(current->left));
-    int rightHeight = (getHeight(current->right));
+    int leftHeight = getHeight(current->left);
+    int rightHeight = getHeight(current->right);
     int height = (max(leftHeight, rightHeight) + 1);
     return height;
 }
@@ -245,7 +250,7 @@ int pokedex::removeAll(node*& current) {
         return 0;
     }
     int counter = 0;
-    counter += removeAll(current->left) + removeAll(current->right);
+    counter += (removeAll(current->left) + removeAll(current->right));
     if (current) {
         delete current;
         current = nullptr;
