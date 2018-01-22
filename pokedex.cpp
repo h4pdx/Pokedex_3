@@ -82,7 +82,7 @@ bool pokedex::build() {
     do {
         newCatch.create(); // pokemon class data entry
         newCatch.display(); // display for user what they just entered
-    } while (!askUser("Confirm")); // do again if they press 'n' on confirm
+    } while (!askUser("Confirm data entered")); // do over if they press 'n' on confirm
     if (this->insert(newCatch)) {
         //++this->entryCount; // is it not insert's job to keep count? just insert
         success = true; // report successful insert
@@ -106,7 +106,7 @@ void pokedex::display()const {
         return;
     } else {
         cout << "\nDisplaying All Pokédex entries (" << this->entryCount << ")";
-        cout << "\n~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~\n";
+        cout << "\n~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~";
         return display(this->root);
     }
 }

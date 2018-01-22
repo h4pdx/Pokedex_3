@@ -68,6 +68,7 @@ public:
     pokemon* retrieve(int key)const;
     int getNum(void)const;
     char* getName(void)const;
+    bool validateType(char* toCheck);
 
 private:
     int number;      // 025
@@ -76,6 +77,7 @@ private:
     char * typeOne;  // Lighting
     char * typeTwo;  // Fairy
     char * bio;      // 1-2 sentences
+    char ** pokemonTypes; // dynamic array of char*
 };
 
 struct node {

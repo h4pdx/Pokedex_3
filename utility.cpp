@@ -203,7 +203,6 @@ void utility::clearArray(char * toClear) {
     if (toClear != nullptr) {
         delete [] toClear;
         toClear = nullptr;
-        cout << "\nArray cleared";
     }
     return;
 }

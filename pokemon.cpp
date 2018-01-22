@@ -19,7 +19,45 @@ node::node(const pokemon& source) {
     this->left = this->right = nullptr;
 }
 
-pokemon::pokemon(): number(0), name(nullptr), desc(nullptr), typeOne(nullptr), typeTwo(nullptr), bio(nullptr) {}
+pokemon::pokemon(): number(0), name(nullptr), desc(nullptr), typeOne(nullptr), typeTwo(nullptr), bio(nullptr) {
+    pokemonTypes = new char * [19]; // dynamic allocation of type array
+    pokemonTypes[0] = new char[5];
+    strcpy(pokemonTypes[0], "FIRE");
+    pokemonTypes[1] = new char[6];
+    strcpy(pokemonTypes[1], "WATER");
+    pokemonTypes[2] = new char[6];
+    strcpy(pokemonTypes[2], "GRASS");
+    pokemonTypes[3] = new char[7];
+    strcpy(pokemonTypes[3], "FLYING");
+    pokemonTypes[4] = new char[7];
+    strcpy(pokemonTypes[4], "NORMAL");
+    pokemonTypes[5] = new char[9];
+    strcpy(pokemonTypes[5], "FIGHTING");
+    pokemonTypes[6] = new char[6];
+    strcpy(pokemonTypes[6], "GHOST");
+    pokemonTypes[7] = new char[7];
+    strcpy(pokemonTypes[7], "POISON");
+    pokemonTypes[8] = new char[7];
+    strcpy(pokemonTypes[8], "DRAGON");
+    pokemonTypes[9] = new char[6];
+    strcpy(pokemonTypes[9], "FAIRY");
+    pokemonTypes[10] = new char[4];
+    strcpy(pokemonTypes[10], "ICE");
+    pokemonTypes[11] = new char[5];
+    strcpy(pokemonTypes[11], "ROCK");
+    pokemonTypes[12] = new char[7];
+    strcpy(pokemonTypes[12], "GROUND");
+    pokemonTypes[13] = new char[8];
+    strcpy(pokemonTypes[13], "PSYCHIC");
+    pokemonTypes[14] = new char[5];
+    strcpy(pokemonTypes[14], "DARK");
+    pokemonTypes[15] = new char[4];
+    strcpy(pokemonTypes[15], "BUG");
+    pokemonTypes[16] = new char[9];
+    strcpy(pokemonTypes[16], "ELECTRIC");
+    pokemonTypes[17] = new char[6];
+    strcpy(pokemonTypes[17], "STEEL");
+}
 
 pokemon::pokemon(const pokemon& source) {
     this->copy(source);
@@ -245,23 +283,33 @@ void pokemon::createField(int& userInput) throw(int) {
 
 // Take user input for the Pokemon data fields
 void pokemon::create() {
-    //bool success = false;
+    // numbers and char arrays for taking user input, then are passed off
     int number = 0;
     char name[NAME], desc[DESC], typeOne[NAME], typeTwo[NAME], bio[BIO];
-    this->createField(number);
-    this->createField("Pokémon name", name, NAME);
+    // Pokemon Number
+    createField(number);
+    // Pokemon Name
+    createField("Pokémon name", name, NAME);
     formatName(name);
-    this->createField("Brief description", desc, DESC);
+    // Description
+    createField("Brief description", desc, DESC);
     formatName(desc);
-    this->createField("Type One", typeOne, NAME);
-    allCaps(typeOne);
+    // Type 1
+    do {
+        createField("Type One", typeOne, NAME);
+        allCaps(typeOne);
+    } while (!validateType(typeOne)); // do over until valid type entered
+    // Type 2 or not
     if (askUser("Does the Pokémon have a 2nd type")) {
-        this->createField("Type Two", typeTwo, NAME);
-        allCaps(typeTwo);
+        do {
+            createField("Type Two", typeTwo, NAME);
+            allCaps(typeTwo);
+        } while (!validateType(typeTwo));
     } else {
         typeTwo[0] = ' ';
     }
-    this->createField("A short bio", bio, BIO);
+    // Bio
+    createField("A short bio", bio, BIO);
     formatSentence(bio);
     // pass populated arrays off for deep copy into calling object
     this->create(number, name, desc, typeOne, typeTwo, bio);
@@ -415,6 +463,18 @@ void pokemon::display()const {
     }
 
 }
+
+bool pokemon::validateType(char* toCheck) {
+    //int len = strlen(this->pokemonTypes);
+    for (int i = 0; i < 18; ++i) {
+        if (!strcmp(toCheck, this->pokemonTypes[i])) {
+            return true;
+        }
+    }
+    cout << "\nInvalid Type! Try Again.";
+    return false;
+}
+
 /*
 // Format inputs, for consistency in recording, searching, displaying
 void pokemon::formatName(char * keyWord) {
