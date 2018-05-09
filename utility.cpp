@@ -4,7 +4,7 @@
 
 #include "utility.h"
 
-int utility::mainMenu() throw(int) {
+int utility::mainMenu() {
     try {
         int userInput = 0;
         cout << "\n + + Main Menu + + + +\n"
@@ -102,7 +102,7 @@ bool utility::confirm() throw(char) {
 }
 */
 
-bool utility::askUser(string toAsk) throw(char) {
+bool utility::askUser(string toAsk) {
     char response = 'n';
     try {
         cout << "\n >> " << toAsk << "? (y/n): ";

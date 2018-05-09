@@ -8,8 +8,7 @@ node::~node() {
     if (this->left) {
         this->left = nullptr;
     }
-    if (this->right)
-    {
+    if (this->right) {
         this->right = nullptr;
     }
 }
@@ -19,44 +18,86 @@ node::node(const pokemon& source) {
     this->left = this->right = nullptr;
 }
 
-pokemon::pokemon(): number(0), name(nullptr), desc(nullptr), typeOne(nullptr), typeTwo(nullptr), bio(nullptr) {
-    pokemonTypes = new char * [19]; // dynamic allocation of type array
-    pokemonTypes[0] = new char[5];
-    strcpy(pokemonTypes[0], "FIRE");
-    pokemonTypes[1] = new char[6];
-    strcpy(pokemonTypes[1], "WATER");
-    pokemonTypes[2] = new char[6];
-    strcpy(pokemonTypes[2], "GRASS");
-    pokemonTypes[3] = new char[7];
-    strcpy(pokemonTypes[3], "FLYING");
-    pokemonTypes[4] = new char[7];
-    strcpy(pokemonTypes[4], "NORMAL");
-    pokemonTypes[5] = new char[9];
-    strcpy(pokemonTypes[5], "FIGHTING");
-    pokemonTypes[6] = new char[6];
-    strcpy(pokemonTypes[6], "GHOST");
-    pokemonTypes[7] = new char[7];
-    strcpy(pokemonTypes[7], "POISON");
-    pokemonTypes[8] = new char[7];
-    strcpy(pokemonTypes[8], "DRAGON");
-    pokemonTypes[9] = new char[6];
-    strcpy(pokemonTypes[9], "FAIRY");
-    pokemonTypes[10] = new char[4];
-    strcpy(pokemonTypes[10], "ICE");
-    pokemonTypes[11] = new char[5];
-    strcpy(pokemonTypes[11], "ROCK");
-    pokemonTypes[12] = new char[7];
-    strcpy(pokemonTypes[12], "GROUND");
-    pokemonTypes[13] = new char[8];
-    strcpy(pokemonTypes[13], "PSYCHIC");
-    pokemonTypes[14] = new char[5];
-    strcpy(pokemonTypes[14], "DARK");
-    pokemonTypes[15] = new char[4];
-    strcpy(pokemonTypes[15], "BUG");
-    pokemonTypes[16] = new char[9];
-    strcpy(pokemonTypes[16], "ELECTRIC");
-    pokemonTypes[17] = new char[6];
-    strcpy(pokemonTypes[17], "STEEL");
+// should move this out of pokemon class. probably Util
+pokemonTypes::pokemonTypes() {
+    types = new char * [19]; // dynamic allocation of type array
+
+    types[0] = new char[5];
+    strcpy(types[0], "FIRE");
+
+    types[1] = new char[6];
+    strcpy(types[1], "WATER");
+
+    types[2] = new char[6];
+    strcpy(types[2], "GRASS");
+
+    types[3] = new char[7];
+    strcpy(types[3], "FLYING");
+
+    types[4] = new char[7];
+    strcpy(types[4], "NORMAL");
+
+    types[5] = new char[9];
+    strcpy(types[5], "FIGHTING");
+
+    types[6] = new char[6];
+    strcpy(types[6], "GHOST");
+
+    types[7] = new char[7];
+    strcpy(types[7], "POISON");
+
+    types[8] = new char[7];
+    strcpy(types[8], "DRAGON");
+
+    types[9] = new char[6];
+    strcpy(types[9], "FAIRY");
+
+    types[10] = new char[4];
+    strcpy(types[10], "ICE");
+
+    types[11] = new char[5];
+    strcpy(types[11], "ROCK");
+
+    types[12] = new char[7];
+    strcpy(types[12], "GROUND");
+
+    types[13] = new char[8];
+    strcpy(types[13], "PSYCHIC");
+
+    types[14] = new char[5];
+    strcpy(types[14], "DARK");
+
+    types[15] = new char[4];
+    strcpy(types[15], "BUG");
+
+    types[16] = new char[9];
+    strcpy(types[16], "ELECTRIC");
+
+    types[17] = new char[6];
+    strcpy(types[17], "STEEL");
+}
+
+pokemonTypes::~pokemonTypes() {
+    for (int i = 0; i < 18; ++i) {
+      if (types[i] != nullptr) {
+        delete [] types[i];
+        types[i] = nullptr;
+      }
+    }
+    if (types != nullptr) {
+      delete [] types;
+      types = nullptr;
+    }
+}
+
+pokemon::pokemon():
+number(0),
+name(nullptr),
+desc(nullptr),
+typeOne(nullptr),
+typeTwo(nullptr),
+bio(nullptr) {
+    pokemonTypes();
 }
 
 pokemon::pokemon(const pokemon& source) {
@@ -72,6 +113,7 @@ pokemon& pokemon::operator = (const pokemon& source) {
     return (*this);
 }
 
+// overload one, overload them all 
 bool operator == (const pokemon& cmp1, const pokemon& cmp2) {
     if (cmp1.getNum() == cmp2.getNum()) {
         return true;
@@ -216,7 +258,6 @@ bool operator >= (int cmp1, const pokemon& cmp2) {
     }
 }
 
-
 pokemon::~pokemon() {
     this->clear();
 }
@@ -244,8 +285,24 @@ void pokemon::clear() {
     }
 }
 
+char* pokemon::getName(void)const {
+  return this->name;
+}
+
+char* pokemon::getTypeOne(void)const {
+  return this->typeOne;
+}
+
+char* pokemon::getTypeTwo(void)const {
+  return this->typeTwo;
+}
+
+int pokemon::getNum(void)const {
+  return this->number;
+}
+
 // Prompt user for input, repeat if invalid input entered
-void pokemon::createField(string inputPrompt, char* userInput, int fieldLen) throw(char*) {
+void pokemon::createField(string inputPrompt, char* userInput, int fieldLen) {
     try {
         cout << "\n >> " << inputPrompt << ": ";
         cin.get(userInput, fieldLen, '\n');
@@ -263,7 +320,9 @@ void pokemon::createField(string inputPrompt, char* userInput, int fieldLen) thr
     }
 }
 
-void pokemon::createField(int& userInput) throw(int) {
+// remove C++14 and prior "throw(int)" specification,
+// removed for C++17? need to kae sure
+void pokemon::createField(int& userInput) {
     try {
         cout << "\n >> Enter Pokémon number: ";
         cin >> userInput;
@@ -334,11 +393,8 @@ void pokemon::create(int number, char* name, char* desc, char* typeOne, char* ty
     // clear desc
     clearArray(this->desc);
     // deep copy
-    if (desc) {
-        this->desc = copyArray(desc);
-    } else {
-        this->desc = nullptr;
-    }
+    if (desc) {this->desc = copyArray(desc);} 
+    else {this->desc = nullptr;}
     // clear typeOne
     clearArray(this->typeOne);
     // deep copy
@@ -466,8 +522,9 @@ void pokemon::display()const {
 
 bool pokemon::validateType(char* toCheck) {
     //int len = strlen(this->pokemonTypes);
+    pokemonTypes compareTo;
     for (int i = 0; i < 18; ++i) {
-        if (!strcmp(toCheck, this->pokemonTypes[i])) {
+        if (!strcmp(toCheck, compareTo.types[i])) {
             return true;
         }
     }
@@ -543,6 +600,7 @@ keyWord[i] = tolower(keyWord[i]);
 }
 */
 // getter func for given pokemon number
+/*
 int pokemon::getNum()const {
     return this->number;
 }
@@ -550,3 +608,4 @@ int pokemon::getNum()const {
 char* pokemon::getName()const {
     return this->name;
 }
+*/

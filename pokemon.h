@@ -16,9 +16,11 @@ using namespace std;
 
 #include "utility.h"
 
+
 const int NAME = 21;
 const int DESC = 41;
 const int BIO = 201;
+
 /*locale loc;*/
 
 class pokemon: public utility {
@@ -56,8 +58,8 @@ public:
     void clear(void);
 
     void create(void);
-    void createField(string inputPrompt, char* userInput, int fieldLen) throw(char*);
-    void createField(int& userInput) throw(int);
+    void createField(string inputPrompt, char* userInput, int fieldLen);
+    void createField(int& userInput);
 
     void create(int number, char* name, char* desc, char* typeOne, char* typeTwo, char* bio);
     void copy(const pokemon& src);
@@ -66,9 +68,12 @@ public:
     pokemon* retrieve(char* keyword)const;
     bool retrieve(int key, pokemon& found) const;
     pokemon* retrieve(int key)const;
-    int getNum(void)const;
-    char* getName(void)const;
     bool validateType(char* toCheck);
+    char* getName(void)const;
+    char* getTypeOne(void)const;
+    char* getTypeTwo(void)const;
+    int getNum(void)const;
+
 
 private:
     int number;      // 025
@@ -77,7 +82,7 @@ private:
     char * typeOne;  // Lighting
     char * typeTwo;  // Fairy
     char * bio;      // 1-2 sentences
-    char ** pokemonTypes; // dynamic array of char*
+    //char ** pokemonTypes; // dynamic array of char*
 };
 
 struct node {
@@ -88,6 +93,14 @@ struct node {
     node * left;
     node * right;
 };
+
+struct pokemonTypes {
+  pokemonTypes();
+  ~pokemonTypes();
+
+  char ** types;
+};
+
 // class node
 /*
 class node: public pokemon {

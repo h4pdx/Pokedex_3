@@ -8,7 +8,7 @@
 
 #include "pokemon.h"
 
-const int MAX_COUNT = 300;
+//const int MAX_COUNT = 300;
 
 class pokedex: public utility {
 public:
