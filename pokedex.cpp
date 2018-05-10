@@ -4,11 +4,12 @@
 
 #include "pokedex.h"
 
-pokedex::pokedex() {
-    entryCount = 0;
-    root = nullptr;
+pokedex::pokedex():
+    root(nullptr),
+    entryCount(0) {
+    //entryCount = 0;
+    //root = nullptr;
 }
-
 
 pokedex::~pokedex() {
     removeAll();

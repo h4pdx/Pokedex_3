@@ -29,79 +29,6 @@ int utility::mainMenu() {
     }
 }
 
-
-/*
-bool utility::again() throw(char) {
-    char response = 'n';
-    try {
-        cout << "\n >> Again? (y/n): ";
-        cin >> response;
-        cin.ignore(100,'\n');
-        response = toupper(response);
-        if (response != 'Y' && response != 'N') {
-            cout << "\nError - Enter a valid answer (y/n).";
-            throw response;
-        }
-        if (response == 'Y') {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    catch (char) {
-        return again();
-    }
-}
-*/
-
-/*
-bool utility::backToMenu() throw(char) {
-    char response = 'n';
-    try {
-        cout << "\n >> Return to previous menu? (y/n): ";
-        cin >> response;
-        cin.ignore(100,'\n');
-        response = toupper(response);
-        if (response != 'Y' && response != 'N') {
-            cout << "\nError - Enter a valid answer (y/n).";
-            throw response;
-        }
-        if (response == 'Y') {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    catch (char) {
-        return backToMenu();
-    }
-}
-*/
-
-/*
-bool utility::confirm() throw(char) {
-    char response = 'n';
-    try {
-        cout << "\n >> Confirm? (y/n): ";
-        cin >> response;
-        cin.ignore(100, '\n');
-        response = toupper(response);
-        if (response != 'Y' && response != 'N') {
-            cout << "\nError - Enter a valid answer (y/n).";
-            throw response;
-        }
-        if (response == 'Y') {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    catch (char) {
-        return confirm();
-    }
-}
-*/
-
 bool utility::askUser(string toAsk) {
     char response = 'n';
     try {
@@ -124,15 +51,17 @@ bool utility::askUser(string toAsk) {
 }
 
 // Format inputs, for consistency in recording, searching, displaying
-void utility::formatName(char * keyWord) {
+void utility::formatName(string& keyWord) {
+    /*
     if (!keyWord)
         return;
     int keyWordLen = 0;
     keyWordLen = strlen(keyWord);
-    if (keyWordLen != 0) {
+    */
+    if (keyWord.length() != 0) {
         keyWord[0] = toupper(keyWord[0]);
         // loop through keyWord and properly capitalize/lowercase letters
-        for (int i = 1; i < keyWordLen; ++i) {
+        for (int i = 1; i < keyWord.length(); ++i) {
             if (keyWord[i-1] == ' ' || keyWord[i-1] == '-') {
                 keyWord[i] = toupper(keyWord[i]);
             }
@@ -149,27 +78,31 @@ void utility::formatName(char * keyWord) {
     }
 }
 
-void utility::allCaps(char *keyWord) {
+void utility::allCaps(string& keyWord) {
+    /*
     if (!keyWord)
         return;
     int keyWordLen = 0;
     keyWordLen = strlen(keyWord);
-    if (keyWordLen != 0) {
-        for (int i = 0; i < keyWordLen; ++i) {
+    */
+    if (keyWord.length() != 0) {
+        for (int i = 0; i < keyWord.length(); ++i) {
             keyWord[i] = toupper(keyWord[i]);
         }
     }
 }
 
-void utility::formatSentence(char * keyWord) {
+void utility::formatSentence(string& keyWord) {
+    /*
     if (!keyWord)
         return;
     int keyWordLen = 0;
     keyWordLen = strlen(keyWord);
-    if (keyWordLen != 0) {
+    */
+    if (keyWord.length() != 0) {
         // capitalize 1st letter, then start loop after
         keyWord[0] = toupper(keyWord[0]);
-        for (int i = 1; i < keyWordLen; ++i) {
+        for (int i = 1; i < keyWord.length(); ++i) {
             // four cases for capitalize: after symbol (. , ! ?)
             if (keyWord[i-2] == '.' ||
                 keyWord[i-2] == '?' ||
@@ -189,7 +122,8 @@ void utility::formatSentence(char * keyWord) {
     }
 }
 
-char* utility::copyArray(char * toCopy) {
+/*
+char* utility::copyArray(char*toCopy) {
     if (toCopy != nullptr) {
         char * newWord = new char[strlen(toCopy) + 1];
         strcpy(newWord, toCopy);
@@ -206,3 +140,4 @@ void utility::clearArray(char * toClear) {
     }
     return;
 }
+*/

@@ -5,17 +5,7 @@
 #ifndef POKEDEX_POKEMON_H
 #define POKEDEX_POKEMON_H
 
-/*
-#include <iostream>
-#include <cctype>
-#include <cstring>
-#include <cstdlib>
-#include <fstream>
-using namespace std;
- */
-
 #include "utility.h"
-
 
 const int NAME = 21;
 const int DESC = 41;
@@ -58,30 +48,37 @@ public:
     void clear(void);
 
     void create(void);
-    void createField(string inputPrompt, char* userInput, int fieldLen);
+    void createField(string inputPrompt, string& userInput, int fieldLen);
     void createField(int& userInput);
 
-    void create(int number, char* name, char* desc, char* typeOne, char* typeTwo, char* bio);
+    void create(int number, string name, string desc, string typeOne, string typeTwo, string bio);
     void copy(const pokemon& src);
     void display(void)const;
-    bool retrieve(char* keyword, pokemon& found)const;
-    pokemon* retrieve(char* keyword)const;
+    bool retrieve(string keyword, pokemon& found)const;
+    pokemon* retrieve(string keyword)const;
     bool retrieve(int key, pokemon& found) const;
     pokemon* retrieve(int key)const;
-    bool validateType(char* toCheck);
-    char* getName(void)const;
-    char* getTypeOne(void)const;
-    char* getTypeTwo(void)const;
+    bool validateType(string toCheck);
+    string getName(void)const;
+    string getTypeOne(void)const;
+    string getTypeTwo(void)const;
     int getNum(void)const;
 
 
 private:
-    int number;      // 025
+    int number;
+    /*      // 025
     char * name;     // Pikachu
     char * desc;     // Thunder Mouse
     char * typeOne;  // Lighting
     char * typeTwo;  // Fairy
     char * bio;      // 1-2 sentences
+    */
+    string name;     // Pikachu
+    string desc;     // Thunder Mouse
+    string typeOne;  // Lighting
+    string typeTwo;  // Fairy
+    string bio;      // 1-2 sentences
     //char ** pokemonTypes; // dynamic array of char*
 };
 
@@ -97,8 +94,7 @@ struct node {
 struct pokemonTypes {
   pokemonTypes();
   ~pokemonTypes();
-
-  char ** types;
+  vector<string> types;
 };
 
 // class node
